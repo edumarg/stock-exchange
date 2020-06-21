@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./css/styles.css" />
+</head>
+
+<body>
+    <!-- ↓↓ Start Row for search bar ↓↓ -->
+    <div class="container-fluid">
+        <!-- ↓↓ Start Row main Title ↓↓ -->
+        <div class="row">
+            <div class="col-lx-12 d-flex flex align-items flex-nowrap">
+                <h1 class="display-1">
+                    Financial Summary
+                </h1>
+            </div>
+            <div class="spinner-border invisible" role="status" id="loadSpinner">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- ↑↑ End Row for main Title ↑↑ -->
+    </div>
+    <!-- ↑↑ End Row for search bar ↑↑ -->
+    <!-- ↓↓ Start Row Company profile  ↓↓ -->
+    <div class="row">
+        <div class="col-xl-12 d-flex align-items flex-nowrap">
+            <div class="row">
+                <div>
+                    <img id="companyLogo" />
+                </div>
+                <div id="companyName"></div>
+                <div id="companySymbol"></div>
+                <div id="companyPrice"></div>
+                <div id="companyPriceChanges"></div>
+                <div id="companyBeta"></div>
+            </div>
+            <div class="row">
+                <p id="companyDescription"></p>
+            </div>
+
+            <canvas id="companyPriceGraph" width="400" height="400"></canvas>
+        </div>
+        <!-- ↑↑ End Row for Company profile ↑↑ -->
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src="./js/company.js"></script>
+
+</html>

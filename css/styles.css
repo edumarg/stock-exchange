@@ -1,3 +1,11 @@
 .invisile {
     display: invisible;
 }
+
+.positive-change {
+    color: green;
+}
+
+.negative-change {
+    color: red;
+}
