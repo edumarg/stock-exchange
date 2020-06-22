@@ -15,7 +15,7 @@
         <!-- ↓↓ Start Row main Title ↓↓ -->
         <div class="row">
             <div class="col-lx-12 d-flex flex align-items flex-nowrap">
-                <h1 class="display-1">
+                <h1 class="display-3">
                     Financial Summary
                 </h1>
             </div>
@@ -26,24 +26,47 @@
         <!-- ↑↑ End Row for main Title ↑↑ -->
     </div>
     <!-- ↑↑ End Row for search bar ↑↑ -->
+
     <!-- ↓↓ Start Row Company profile  ↓↓ -->
     <div class="row">
-        <div class="col-xl-12 d-flex align-items flex-nowrap">
+        <div class="col-xl-12">
+            <!-- ↓↓ Start Row Company info  ↓↓ -->
             <div class="row">
-                <div>
-                    <img id="companyLogo" />
+                <div class="col-xl-12 d-flex align-items flex-nowrap">
+                    <div>
+                        <img id="companyLogo" />
+                    </div>
+                    <div id="companyName"></div>
+                    <div id="companySymbol"></div>
                 </div>
-                <div id="companyName"></div>
-                <div id="companySymbol"></div>
-                <div id="companyPrice"></div>
-                <div id="companyPriceChanges"></div>
-                <div id="companyBeta"></div>
             </div>
-            <div class="row">
-                <p id="companyDescription"></p>
-            </div>
+            <!-- ↑↑ End Row for company info ↑↑ -->
 
-            <canvas id="companyPriceGraph" width="400" height="400"></canvas>
+            <!-- ↓↓ Start Row Company financial numbers  ↓↓ -->
+            <div class="row">
+                <div class="col-xl-12 d-flex align-items flex-nowrap justify-content-between">
+                    <div id="companyPrice"></div>
+                    <div id="companyPriceChanges"></div>
+                    <div id="companyBeta"></div>
+                </div>
+            </div>
+            <!-- ↑↑ End Row for company financial numbers ↑↑ -->
+
+            <!-- ↓↓ Start Row Company description  ↓↓ -->
+            <div class="row">
+                <div class="col-xl-12">
+                    <p id="companyDescription"></p>
+                </div>
+            </div>
+            <!-- ↑↑ End Row for company description ↑↑ -->
+
+            <!-- ↓↓ Start Row Historic price graphs  ↓↓ -->
+            <div class="row">
+                <div class="col-xl-12">
+                    <canvas id="companyPriceGraph" width="1400" min-height="500"></canvas>
+                </div>
+            </div>
+            <!-- ↑↑ End Row for Historic price graph ↑↑ -->
         </div>
         <!-- ↑↑ End Row for Company profile ↑↑ -->
     </div>
