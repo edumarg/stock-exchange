@@ -14,3 +14,16 @@
     width: 2.5rem;
     height: 2.5rem;
 }
+
+.stocks-marquee {
+    animation: scrolling 30s linear infinite;
+}
+
+@keyframes scrolling {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-300%);
+    }
+}

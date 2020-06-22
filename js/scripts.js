@@ -6,6 +6,8 @@ const searchButton = document.getElementById("searchButton");
 const searchResultList = document.getElementById("searchResultList");
 const searchSpinner = document.getElementById("searchSpinner");
 
+createMarquee();
+
 async function searchResults(event) {
     event.preventDefault();
     searchSpinner.classList.remove("invisible");
@@ -38,6 +40,24 @@ async function fetchCompanyInfo(symbol) {
 function createListItem(image, symbol, name, changes) {
     let listItem = `<li class="list-group-item"><img src="${image}" class="search-img"/><a href="/company.html?symbol=${symbol}"> ${name} (${symbol})</a><span>(${changes})</span></li>`;
     searchResultList.innerHTML += listItem;
+}
+
+async function fetchMarqueeDataFetch() {
+    const MARQUEE_DATA_PATH = `api/v3/quotes/nasdaq`;
+    const response = await fetch(`${URL}/${MARQUEE_DATA_PATH}?${API_KEY}`);
+    const company = await response.json();
+    return company;
+}
+
+async function createMarquee() {
+    const company = await fetchMarqueeDataFetch();
+    const marqueeList = document.getElementById("stocksMarquee");
+    for (let i = 0; i < 200; i++) {
+        const marqueElement = document.createElement("li");
+        marqueElement.classList.add("list-group-item", "mr-2", "ml-2");
+        marqueElement.innerText = `${company[i].symbol} $${company[i].price} (${company[i].change})`;
+        marqueeList.appendChild(marqueElement);
+    }
 }
 
 searchButton.addEventListener("click", searchResults);
