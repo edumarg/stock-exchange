@@ -3,8 +3,8 @@ const queryStringSymbol = queryString.get("symbol");
 const URL_COMPANY_PROFILE = `https://financialmodelingprep.com/api/v3/company/profile/${queryStringSymbol}`;
 const URL_HISTORIC_PRICE = `https://financialmodelingprep.com/api/v3/historical-price-full/${queryStringSymbol}?serietype=l
 ine`;
-const API_KEY = `apikey=c0fe037c8bad4c70956398698a2cfdb2`;
-// const API_KEY = `apikey=ea12a6445627535f77bf1b31041d6831`;
+const API_KEY = `apikey=ed93f3e229380c530b7a0e7663f86b99`;
+
 const companyLogo = document.getElementById("companyLogo");
 const comapanyName = document.getElementById("companyName");
 const companySymbol = document.getElementById("companySymbol");
@@ -14,25 +14,28 @@ const companyDescription = document.getElementById("companyDescription");
 const companyPriceChanges = document.getElementById("companyPriceChanges");
 const loadSpinner = document.getElementById("loadSpinner");
 
-fetchCompanyData();
-fetchCompanyHistoricalPrice();
+loadPage();
+
+async function loadPage() {
+    loadSpinner.classList.remove("invisible");
+    const company = await fetchCompanyData();
+    createHTMLElemenst(company);
+    const historicalPrices = await fetchCompanyHistoricalPrice();
+    createHistoricalChart(historicalPrices);
+    loadSpinner.classList.add("invisible");
+}
 
 async function fetchCompanyData() {
-    loadSpinner.classList.remove("invisible");
     const response = await fetch(`${URL_COMPANY_PROFILE}?${API_KEY}`);
-    const object = await response.json();
+    const company = (await response.json()).profile;
+    return company;
+}
 
-    companySymbol.innerText = object.symbol;
-    const {
-        image,
-        companyName,
-        price,
-        beta,
-        description,
-        changes,
-    } = object.profile;
+function createHTMLElemenst(company) {
+    companySymbol.innerText = queryStringSymbol;
+    const { image, companyName, price, beta, description, changes } = company;
     companyLogo.src = image;
-    comapanyName.innerText = `Comany name: ${companyName}`;
+    comapanyName.innerText = `Company name: ${companyName}`;
     companyPrice.innerText = `Current price: $${price}`;
     companyPriceChanges.innerText = `(${changes})`;
     companyBeta.innerText = `beta: ${beta}`;
@@ -44,7 +47,6 @@ async function fetchCompanyData() {
         companyPriceChanges.classList.remove("positive-change");
         companyPriceChanges.classList.add("negative-change");
     }
-    loadSpinner.classList.add("invisible");
 }
 
 async function fetchCompanyHistoricalPrice() {
@@ -52,17 +54,14 @@ async function fetchCompanyHistoricalPrice() {
     const response = await fetch(`${URL_HISTORIC_PRICE}&${API_KEY}`);
     const object = await response.json();
     const historicalData = await object.historical;
-    console.log("historical", historicalData);
-    createHistoricalChart(historicalData);
     loadSpinner.classList.add("invisible");
+    return historicalData;
 }
 
 function createHistoricalChart(data) {
     let ctx = document.getElementById("companyPriceGraph").getContext("2d");
     let xLabels = [];
     let historicalData = [];
-    console.log("object key length", Object.keys(data).length);
-    console.log("data length", historicalData.length);
     for (let i = 0; i < Object.keys(data).length; i++) {
         xLabels.push(data[i].date);
         historicalData.push(data[i].close);

@@ -14,12 +14,12 @@
     <div class="container-fluid">
         <!-- ↓↓ Start Row main Title ↓↓ -->
         <div class="row">
-            <div class="col-lx-12 d-flex flex align-items flex-nowrap">
+            <div class="col-lx-12 d-flex flex align-items flex-nowrap m-5">
                 <h1 class="display-3">
                     Financial Summary
                 </h1>
             </div>
-            <div class="spinner-border invisible" role="status" id="loadSpinner">
+            <div class="spinner-border invisible mr-3 mt-5 text-center" role="status" id="loadSpinner">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
@@ -32,11 +32,11 @@
         <div class="col-xl-12">
             <!-- ↓↓ Start Row Company info  ↓↓ -->
             <div class="row">
-                <div class="col-xl-12 d-flex align-items flex-nowrap">
+                <div class="col-xl-12 d-flex align-items flex-nowrap ml-5 mb-3">
                     <div>
                         <img id="companyLogo" />
                     </div>
-                    <div id="companyName"></div>
+                    <div id="companyName" class="ml-5 mr-5"></div>
                     <div id="companySymbol"></div>
                 </div>
             </div>
@@ -44,10 +44,10 @@
 
             <!-- ↓↓ Start Row Company financial numbers  ↓↓ -->
             <div class="row">
-                <div class="col-xl-12 d-flex align-items flex-nowrap justify-content-between">
-                    <div id="companyPrice"></div>
-                    <div id="companyPriceChanges"></div>
-                    <div id="companyBeta"></div>
+                <div class="col-xl-12 d-flex align-items flex-nowrap">
+                    <div id="companyPrice" class="ml-5 mr-5"></div>
+                    <div id="companyPriceChanges" class="mr-5"></div>
+                    <div id="companyBeta" class=""></div>
                 </div>
             </div>
             <!-- ↑↑ End Row for company financial numbers ↑↑ -->
@@ -55,7 +55,7 @@
             <!-- ↓↓ Start Row Company description  ↓↓ -->
             <div class="row">
                 <div class="col-xl-12">
-                    <p id="companyDescription"></p>
+                    <p id="companyDescription" class="m-5"></p>
                 </div>
             </div>
             <!-- ↑↑ End Row for company description ↑↑ -->
