@@ -5,6 +5,7 @@ const API_KEY = `apikey=ed93f3e229380c530b7a0e7663f86b99`;
 const searchButton = document.getElementById("searchButton");
 const searchResultList = document.getElementById("searchResultList");
 const searchSpinner = document.getElementById("searchSpinner");
+const marqueeList = document.getElementById("stocksMarquee");
 
 createMarquee();
 
@@ -51,7 +52,10 @@ async function fetchMarqueeDataFetch() {
 
 async function createMarquee() {
     const company = await fetchMarqueeDataFetch();
-    const marqueeList = document.getElementById("stocksMarquee");
+    loopOverDatatoCreateList(company);
+}
+
+function loopOverDatatoCreateList(company) {
     for (let i = 0; i < 200; i++) {
         const marqueElement = document.createElement("li");
         marqueElement.classList.add("list-group-item", "mr-2", "ml-2");
