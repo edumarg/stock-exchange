@@ -1,49 +1,43 @@
-const eduCompanyDataHandling = {};
-const eduCompanyRequestsHandling = {};
-const eduCompanyPageHandling = {};
+const CompanyDataHandling = {};
+const CompanyRequestsHandling = {};
+const CompanyPageHandling = {};
 
-eduCompanyRequestsHandling.queryString = new URLSearchParams(
+CompanyRequestsHandling.queryString = new URLSearchParams(
     window.location.search
 );
-eduCompanyRequestsHandling.queryStringSymbol = eduCompanyRequestsHandling.queryString.get(
+CompanyRequestsHandling.queryStringSymbol = CompanyRequestsHandling.queryString.get(
     "symbol"
 );
-eduCompanyRequestsHandling.URL = `https://financialmodelingprep.com`;
-eduCompanyRequestsHandling.PATH_COMPANY_PROFILE = `api/v3/company/profile/${eduCompanyRequestsHandling.queryStringSymbol}`;
-eduCompanyRequestsHandling.PATH_HISTORIC_PRICE = `api/v3/historical-price-full/${eduCompanyRequestsHandling.queryStringSymbol}?serietype=l
+CompanyRequestsHandling.URL = `https://financialmodelingprep.com`;
+CompanyRequestsHandling.PATH_COMPANY_PROFILE = `api/v3/company/profile/${CompanyRequestsHandling.queryStringSymbol}`;
+CompanyRequestsHandling.PATH_HISTORIC_PRICE = `api/v3/historical-price-full/${CompanyRequestsHandling.queryStringSymbol}?serietype=l
 ine`;
-eduCompanyRequestsHandling.API_KEY = `apikey=ed93f3e229380c530b7a0e7663f86b99`;
-eduCompanyRequestsHandling.loadSpinner = document.getElementById("loadSpinner");
+CompanyRequestsHandling.API_KEY = `apikey=ed93f3e229380c530b7a0e7663f86b99`;
+CompanyRequestsHandling.loadSpinner = document.getElementById("loadSpinner");
 
-eduCompanyDataHandling.companyLogo = document.getElementById("companyLogo");
-eduCompanyDataHandling.comapanyName = document.getElementById("companyName");
-eduCompanyDataHandling.companySymbol = document.getElementById("companySymbol");
-eduCompanyDataHandling.companyPrice = document.getElementById("companyPrice");
-eduCompanyDataHandling.companyBeta = document.getElementById("companyBeta");
-eduCompanyDataHandling.companyDescription = document.getElementById(
+CompanyDataHandling.companyLogo = document.getElementById("companyLogo");
+CompanyDataHandling.comapanyName = document.getElementById("companyName");
+CompanyDataHandling.companySymbol = document.getElementById("companySymbol");
+CompanyDataHandling.companyPrice = document.getElementById("companyPrice");
+CompanyDataHandling.companyBeta = document.getElementById("companyBeta");
+CompanyDataHandling.companyDescription = document.getElementById(
     "companyDescription"
 );
-eduCompanyDataHandling.companyPriceChanges = document.getElementById(
+CompanyDataHandling.companyPriceChanges = document.getElementById(
     "companyPriceChanges"
 );
 
-eduCompanyRequestsHandling.fetchCompanyData = async function() {
+// ---------------------------------------------- Fetch company Data -------------------------------------------------------
+CompanyRequestsHandling.fetchCompanyData = async function() {
     const response = await fetch(
-        `${eduCompanyRequestsHandling.URL}/${eduCompanyRequestsHandling.PATH_COMPANY_PROFILE}?${eduCompanyRequestsHandling.API_KEY}`
+        `${CompanyRequestsHandling.URL}/${CompanyRequestsHandling.PATH_COMPANY_PROFILE}?${CompanyRequestsHandling.API_KEY}`
     );
     const company = (await response.json()).profile;
     return company;
 };
 
-eduCompanyDataHandling.createHTMLElemenst = function(company) {
-    companySymbol.textContent = eduCompanyRequestsHandling.queryStringSymbol;
-    const { image, companyName, price, beta, description, changes } = company;
-    companyLogo.src = image;
-    companyName.textContent = `Company name: ${companyName}`;
-    companyPrice.textContent = `Current price: $${price}`;
-    companyPriceChanges.textContent = `(${changes})`;
-    companyBeta.textContent = `beta: ${beta}`;
-    companyDescription.textContent = description;
+//--------------------------------------- Change color of changes acording to gain or looses -----------------------------
+CompanyDataHandling.changeColorOfPriceChanges = function(changes) {
     if (changes >= 0) {
         companyPriceChanges.classList.add("positive-change");
         companyPriceChanges.classList.remove("negative-change");
@@ -53,10 +47,24 @@ eduCompanyDataHandling.createHTMLElemenst = function(company) {
     }
 };
 
-eduCompanyRequestsHandling.fetchCompanyHistoricalPrice = async function() {
+// ------------------------------------ Populate the HTML page elements with data fetch from server -------------------
+CompanyDataHandling.createHTMLElemenst = function(company) {
+    companySymbol.textContent = CompanyRequestsHandling.queryStringSymbol;
+    const { image, companyName, price, beta, description, changes } = company;
+    companyLogo.src = image;
+    companyName.textContent = `Company name: ${companyName}`;
+    companyPrice.textContent = `Current price: $${price}`;
+    companyPriceChanges.textContent = `(${changes})`;
+    companyBeta.textContent = `beta: ${beta}`;
+    companyDescription.textContent = description;
+    CompanyDataHandling.changeColorOfPriceChanges(changes);
+};
+
+//--------------------------------- Fetch the comapny historical prices to created the chart -----------------------------
+CompanyRequestsHandling.fetchCompanyHistoricalPrice = async function() {
     loadSpinner.classList.remove("invisible");
     const response = await fetch(
-        `${eduCompanyRequestsHandling.URL}/${eduCompanyRequestsHandling.PATH_HISTORIC_PRICE}&${eduCompanyRequestsHandling.API_KEY}`
+        `${CompanyRequestsHandling.URL}/${CompanyRequestsHandling.PATH_HISTORIC_PRICE}&${CompanyRequestsHandling.API_KEY}`
     );
     const object = await response.json();
     const historicalData = await object.historical;
@@ -64,7 +72,8 @@ eduCompanyRequestsHandling.fetchCompanyHistoricalPrice = async function() {
     return historicalData;
 };
 
-eduCompanyDataHandling.createHistoricalChart = function(data) {
+//----------------------------------------- Create the historical price chart -------------------------------------
+CompanyDataHandling.createHistoricalChart = function(data) {
     let ctx = document.getElementById("companyPriceGraph").getContext("2d");
     let xLabels = [];
     let historicalData = [];
@@ -100,13 +109,15 @@ eduCompanyDataHandling.createHistoricalChart = function(data) {
         },
     });
 };
-eduCompanyPageHandling.loadPage = async function() {
+
+// ---------------------------------------- call all the function on page load -------------------------------------
+CompanyPageHandling.loadPage = async function() {
     loadSpinner.classList.remove("invisible");
-    const company = await eduCompanyRequestsHandling.fetchCompanyData();
-    eduCompanyDataHandling.createHTMLElemenst(company);
-    const historicalPrices = await eduCompanyRequestsHandling.fetchCompanyHistoricalPrice();
-    eduCompanyDataHandling.createHistoricalChart(historicalPrices);
+    const company = await CompanyRequestsHandling.fetchCompanyData();
+    CompanyDataHandling.createHTMLElemenst(company);
+    const historicalPrices = await CompanyRequestsHandling.fetchCompanyHistoricalPrice();
+    CompanyDataHandling.createHistoricalChart(historicalPrices);
     loadSpinner.classList.add("invisible");
 };
 
-eduCompanyPageHandling.loadPage();
+CompanyPageHandling.loadPage();

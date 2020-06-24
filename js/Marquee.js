@@ -1,6 +1,7 @@
 function Marquee(element) {
     this.element = element;
-    // Fetch data to display on the marque
+
+    // -------------------------------------- Fetch data to display on the marque -------------------------------------
     this.fetchMarqueeData = async function() {
         const URL = "https://financialmodelingprep.com";
         const API_KEY = `apikey=ed93f3e229380c530b7a0e7663f86b99`;
@@ -10,7 +11,25 @@ function Marquee(element) {
         return company;
     };
 
-    // Create the UL element for with the data of the Marquee
+    // ------------------------- Change color of changes acording to gain or looses -------------------------------
+    this.changeColorOfPriceChange = function(changes, element) {
+        if (changes >= 0) {
+            element.classList.add("positive-change");
+            element.classList.remove("negative-change");
+        } else {
+            element.classList.remove("positive-change");
+            element.classList.add("negative-change");
+        }
+    };
+
+    // ---------------  append multiple  children tags to one parrent------------------
+    this.appendChildrenElementsToFather = function(father, ...children) {
+        for (child of children) {
+            father.appendChild(child);
+        }
+    };
+
+    // -------------- Create the UL element for with the data of the Marquee --------------
     this.loopOverDatatoCreateMarqueeList = function(company, marqueeULElement) {
         for (let i = 0; i < 200; i++) {
             const marqueLIElement = document.createElement("li");
@@ -23,21 +42,18 @@ function Marquee(element) {
             marquePriceElement.textContent = `$${company[i].price}`;
             const marqueChangeElement = document.createElement("span");
             marqueChangeElement.textContent = `(${company[i].change})`;
-            if (company[i].change >= 0) {
-                marqueChangeElement.classList.add("positive-change");
-                marqueChangeElement.classList.remove("negative-change");
-            } else {
-                marqueChangeElement.classList.remove("positive-change");
-                marqueChangeElement.classList.add("negative-change");
-            }
-            marqueLIElement.appendChild(marqueSymbolElement);
-            marqueLIElement.appendChild(marquePriceElement);
-            marqueLIElement.appendChild(marqueChangeElement);
+            this.changeColorOfPriceChange(company[i].change, marqueChangeElement);
+            this.appendChildrenElementsToFather(
+                marqueLIElement,
+                marqueSymbolElement,
+                marquePriceElement,
+                marqueChangeElement
+            );
             marqueeULElement.appendChild(marqueLIElement);
         }
     };
 
-    // Create the MArquee with the data fetch and the element creation
+    //  ------------------  Create the MArquee with the data fetch and the element creation ------------------
     this.createMarquee = async function() {
         const company = await this.fetchMarqueeData();
         const marqueeList = this.element;
