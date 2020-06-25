@@ -1,8 +1,10 @@
-function Marquee(element) {
-    this.element = element;
+class Marquee {
+    constructor(element) {
+        this.element = element;
+    }
 
     // -------------------------------------- Fetch data to display on the marque -------------------------------------
-    let fetchMarqueeData = async function() {
+    fetchMarqueeData = async function() {
         const URL = "https://financialmodelingprep.com";
         const API_KEY = `apikey=ed93f3e229380c530b7a0e7663f86b99`;
         const MARQUEE_DATA_PATH = `api/v3/quotes/nasdaq`;
@@ -12,7 +14,7 @@ function Marquee(element) {
     };
 
     // ------------------------- Change color of changes acording to gain or looses -------------------------------
-    let changeColorOfPriceChange = function(changes, element) {
+    changeColorOfPriceChange = function(changes, element) {
         if (changes >= 0) {
             element.classList.add("positive-change");
             element.classList.remove("negative-change");
@@ -23,14 +25,14 @@ function Marquee(element) {
     };
 
     // ---------------  append multiple  children tags to one parrent------------------
-    let appendChildrenElementsToFather = function(father, ...children) {
+    appendChildrenElementsToFather = function(father, ...children) {
         for (child of children) {
             father.appendChild(child);
         }
     };
 
     // -------------- Create the UL element for with the data of the Marquee --------------
-    let loopOverDatatoCreateMarqueeList = function(company, marqueeULElement) {
+    loopOverDatatoCreateMarqueeList = function(company, marqueeULElement) {
         for (let i = 0; i < 100; i++) {
             const marqueLIElement = document.createElement("li");
             marqueLIElement.classList.add("list-group-item", "mr-2", "ml-2");
@@ -42,8 +44,8 @@ function Marquee(element) {
             marquePriceElement.textContent = `$${company[i].price}`;
             const marqueChangeElement = document.createElement("span");
             marqueChangeElement.textContent = `(${company[i].change})`;
-            changeColorOfPriceChange(company[i].change, marqueChangeElement);
-            appendChildrenElementsToFather(
+            this.changeColorOfPriceChange(company[i].change, marqueChangeElement);
+            this.appendChildrenElementsToFather(
                 marqueLIElement,
                 marqueSymbolElement,
                 marquePriceElement,
@@ -54,8 +56,8 @@ function Marquee(element) {
     };
 
     //  ------------------  Create the MArquee with the data fetch and the element creation ------------------
-    this.createMarquee = async function() {
-        const company = await fetchMarqueeData();
+    createMarquee = async function() {
+        const company = await this.fetchMarqueeData();
         const marqueeList = this.element;
         const marqueeULElement = document.createElement("ul");
         marqueeList.appendChild(marqueeULElement);
@@ -64,6 +66,6 @@ function Marquee(element) {
             "list-group-horizontal",
             "stocks-marquee"
         );
-        loopOverDatatoCreateMarqueeList(company, marqueeULElement);
+        this.loopOverDatatoCreateMarqueeList(company, marqueeULElement);
     };
 }

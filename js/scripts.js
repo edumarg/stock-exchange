@@ -11,12 +11,12 @@ ScriptPageHandling.searchBarElement = document.getElementById("searchBar");
 ScriptPageHandling.marquee = new Marquee(ScriptPageHandling.stocksMarquee);
 ScriptPageHandling.marquee.createMarquee();
 
-//---------------------------------- Call the search Bar---------------------------------
+//------------------------------------------- Call the search Bar -----------------------------------------------------
 ScriptPageHandling.searchBar = new SearchBar(
     ScriptPageHandling.searchBarElement
 );
 
-//------------ handle the search-----------------
+//--------------------------------------------------- handle the search ---------------------------------------------------
 
 ScriptDataHandling.searchSpinner = document.getElementById("searchSpinner");
 ScriptPageHandling.searchButton = document.getElementById("searchButton");
@@ -64,7 +64,7 @@ ScriptDataHandling.changeColorOfPriceChanges = function(changes, element) {
     }
 };
 
-// --------------------------- When creating HTML element append children tags to its Father -------------------------
+// ------------------------------ When creating HTML element append children tags to its Father -------------------------
 ScriptPageHandling.appendChildrenElementsToFather = function(
     father,
     ...children
@@ -88,26 +88,27 @@ function createListItem(image, symbol, name, changes) {
 // --------------------------------------- Render the search results list ------------------------------------
 
 function renderSearchResults(results) {
-    for (i in results) {
+    for (result of results) {
+        const { name, image, symbol, changes } = result;
         const searResultListULElement = document.createElement("ul");
         ScriptDataHandling.searchResultList.appendChild(searResultListULElement);
         searResultListULElement.classList.add("list-group-flush");
         const searResultListLIElement = document.createElement("li");
         searResultListLIElement.classList.add("list-group-item");
         const searResultListImgElement = document.createElement("img");
-        searResultListImgElement.setAttribute("src", `${results[i].image}`);
+        searResultListImgElement.setAttribute("src", `${image}`);
         searResultListImgElement.classList.add("search-img", "ml-2");
         const searResultListAnchorElement = document.createElement("a");
         searResultListAnchorElement.setAttribute(
             "href",
-            `/company.html?symbol=${results[i].symbol}`
+            `/company.html?symbol=${symbol}`
         );
         searResultListAnchorElement.classList.add("ml-2");
-        searResultListAnchorElement.textContent = `${results[i].name} (${results[i].symbol})`;
+        searResultListAnchorElement.textContent = `${name} (${symbol})`;
         const searResultListSpanElement = document.createElement("span");
-        searResultListSpanElement.textContent = `(${results[i].changes})`;
+        searResultListSpanElement.textContent = `(${changes})`;
         ScriptDataHandling.changeColorOfPriceChanges(
-            results[i].changes,
+            changes,
             searResultListSpanElement
         );
         ScriptPageHandling.appendChildrenElementsToFather(
