@@ -1,151 +1,139 @@
-const ScriptRequestHandling = {};
-const ScriptDataHandling = {};
-const ScriptPageHandling = {};
-ScriptRequestHandling.URL = "https://financialmodelingprep.com";
-ScriptRequestHandling.API_KEY = `apikey=ed93f3e229380c530b7a0e7663f86b99`;
-ScriptPageHandling.stocksMarquee = document.getElementById("stocksMarquee");
-ScriptPageHandling.searchBarElement = document.getElementById("searchBar");
+// const ScriptRequestHandling = {};
+// const ScriptDataHandling = {};
+// const ScriptPageHandling = {};
+// ScriptRequestHandling.URL = "https://financialmodelingprep.com";
+// ScriptRequestHandling.API_KEY = `apikey=ed93f3e229380c530b7a0e7663f86b99`;
 
-// ---------------------------------------------- call the marquee -------------------------------------------------
+// //--------------------------------------------------- handle the search ---------------------------------------------------
 
-ScriptPageHandling.marquee = new Marquee(ScriptPageHandling.stocksMarquee);
-ScriptPageHandling.marquee.createMarquee();
+// ScriptDataHandling.searchSpinner = document.getElementById("searchSpinner");
+// ScriptPageHandling.searchButton = document.getElementById("searchButton");
 
-//------------------------------------------- Call the search Bar -----------------------------------------------------
-ScriptPageHandling.searchBar = new SearchBar(
-    ScriptPageHandling.searchBarElement
-);
+// ScriptDataHandling.searchInput = document.getElementById("searchInput");
+// ScriptDataHandling.whatToSearch;
+// ScriptDataHandling.searchResultList = document.getElementById(
+//     "searchResultList"
+// );
 
-//--------------------------------------------------- handle the search ---------------------------------------------------
+// //  ---------------------------------------- Fetch Search data from the server ----------------------------------------
+// ScriptRequestHandling.fetchSearchData = async function() {
+//     whatToSearch = searchInput.value;
+//     const TICKER_SEARCH_PATH = `api/v3/search?query=${whatToSearch}&limit=10&exchange=NASDAQ`;
+//     const response = await fetch(
+//         `${ScriptRequestHandling.URL}/${TICKER_SEARCH_PATH}&${ScriptRequestHandling.API_KEY}`
+//     );
+//     const companies = await response.json();
+//     return companies;
+// };
 
-ScriptDataHandling.searchSpinner = document.getElementById("searchSpinner");
-ScriptPageHandling.searchButton = document.getElementById("searchButton");
+// //  ----------------------------------------After fetching search data ,
+// //                  search for the company information to extract the symbol and change values --------------------------
+// ScriptRequestHandling.fetchCompanyInfo = async function(symbol) {
+//     const companySymbol = symbol;
+//     const COMPANY_PROFILE_PATH = `api/v3/profile/${companySymbol}`;
+//     const response = await fetch(
+//         `${ScriptRequestHandling.URL}/${COMPANY_PROFILE_PATH}?${ScriptRequestHandling.API_KEY}`
+//     );
 
-ScriptDataHandling.searchInput = document.getElementById("searchInput");
-ScriptDataHandling.whatToSearch;
-ScriptDataHandling.searchResultList = document.getElementById(
-    "searchResultList"
-);
+//     const information = await response.json();
 
-//  ---------------------------------------- Fetch Search data from the server ----------------------------------------
-ScriptRequestHandling.fetchSearchData = async function() {
-    whatToSearch = searchInput.value;
-    const TICKER_SEARCH_PATH = `api/v3/search?query=${whatToSearch}&limit=10&exchange=NASDAQ`;
-    const response = await fetch(
-        `${ScriptRequestHandling.URL}/${TICKER_SEARCH_PATH}&${ScriptRequestHandling.API_KEY}`
-    );
-    const companies = await response.json();
-    return companies;
-};
+//     return information;
+// };
 
-//  ----------------------------------------After fetching search data ,
-//                  search for the company information to extract the symbol and change values --------------------------
-ScriptRequestHandling.fetchCompanyInfo = async function(symbol) {
-    const companySymbol = symbol;
-    const COMPANY_PROFILE_PATH = `api/v3/profile/${companySymbol}`;
-    const response = await fetch(
-        `${ScriptRequestHandling.URL}/${COMPANY_PROFILE_PATH}?${ScriptRequestHandling.API_KEY}`
-    );
+// // ---------------------------------  Change color of changes acording to gain or looses ---------------------------------
 
-    const information = await response.json();
+// ScriptDataHandling.changeColorOfPriceChanges = function(changes, element) {
+//     if (changes >= 0) {
+//         element.classList.add("positive-change");
+//         element.classList.remove("negative-change");
+//     } else {
+//         element.classList.remove("positive-change");
+//         element.classList.add("negative-change");
+//     }
+// };
 
-    return information;
-};
+// // ------------------------------ When creating HTML element append children tags to its Father -------------------------
+// ScriptPageHandling.appendChildrenElementsToFather = function(
+//     father,
+//     ...children
+// ) {
+//     for (child of children) {
+//         father.appendChild(child);
+//     }
+// };
 
-// ---------------------------------  Change color of changes acording to gain or looses ---------------------------------
+// // -----------------------  Create the result list items with the logo, symbol, changes  ---------------------------------
+// function createListItem(image, symbol, name, changes) {
+//     const company = {
+//         image: image,
+//         symbol: symbol,
+//         name: name,
+//         changes: changes,
+//     };
+//     return company;
+// }
 
-ScriptDataHandling.changeColorOfPriceChanges = function(changes, element) {
-    if (changes >= 0) {
-        element.classList.add("positive-change");
-        element.classList.remove("negative-change");
-    } else {
-        element.classList.remove("positive-change");
-        element.classList.add("negative-change");
-    }
-};
+// // --------------------------------------- Render the search results list ------------------------------------
 
-// ------------------------------ When creating HTML element append children tags to its Father -------------------------
-ScriptPageHandling.appendChildrenElementsToFather = function(
-    father,
-    ...children
-) {
-    for (child of children) {
-        father.appendChild(child);
-    }
-};
+// function renderSearchResults(results) {
+//     for (result of results) {
+//         const { name, image, symbol, changes } = result;
+//         const searResultListULElement = document.createElement("ul");
+//         ScriptDataHandling.searchResultList.appendChild(searResultListULElement);
+//         searResultListULElement.classList.add("list-group-flush");
+//         const searResultListLIElement = document.createElement("li");
+//         searResultListLIElement.classList.add("list-group-item");
+//         const searResultListImgElement = document.createElement("img");
+//         searResultListImgElement.setAttribute("src", `${image}`);
+//         searResultListImgElement.classList.add("search-img", "ml-2");
+//         const searResultListAnchorElement = document.createElement("a");
+//         searResultListAnchorElement.setAttribute(
+//             "href",
+//             `/company.html?symbol=${symbol}`
+//         );
+//         searResultListAnchorElement.classList.add("ml-2");
+//         searResultListAnchorElement.textContent = `${name} (${symbol})`;
+//         const searResultListSpanElement = document.createElement("span");
+//         searResultListSpanElement.textContent = `(${changes})`;
+//         ScriptDataHandling.changeColorOfPriceChanges(
+//             changes,
+//             searResultListSpanElement
+//         );
+//         ScriptPageHandling.appendChildrenElementsToFather(
+//             searResultListLIElement,
+//             searResultListImgElement,
+//             searResultListAnchorElement,
+//             searResultListSpanElement
+//         );
+//         ScriptPageHandling.appendChildrenElementsToFather(
+//             searResultListULElement,
+//             searResultListLIElement
+//         );
+//     }
+// }
 
-// -----------------------  Create the result list items with the logo, symbol, changes  ---------------------------------
-function createListItem(image, symbol, name, changes) {
-    const company = {
-        image: image,
-        symbol: symbol,
-        name: name,
-        changes: changes,
-    };
-    return company;
-}
+// // -------------- Create the search result windows after fetchng the data and creating the list of elements  ------------
 
-// --------------------------------------- Render the search results list ------------------------------------
+// ScriptPageHandling.searchResults = async function(event) {
+//     event.preventDefault();
+//     ScriptDataHandling.searchResultList.textContent = "";
+//     searchSpinner.classList.remove("invisible");
+//     const companies = await ScriptRequestHandling.fetchSearchData();
+//     const mapedCompanies = await Promise.all(
+//         companies.map(async(company) => {
+//             company = await ScriptRequestHandling.fetchCompanyInfo(company.symbol);
 
-function renderSearchResults(results) {
-    for (result of results) {
-        const { name, image, symbol, changes } = result;
-        const searResultListULElement = document.createElement("ul");
-        ScriptDataHandling.searchResultList.appendChild(searResultListULElement);
-        searResultListULElement.classList.add("list-group-flush");
-        const searResultListLIElement = document.createElement("li");
-        searResultListLIElement.classList.add("list-group-item");
-        const searResultListImgElement = document.createElement("img");
-        searResultListImgElement.setAttribute("src", `${image}`);
-        searResultListImgElement.classList.add("search-img", "ml-2");
-        const searResultListAnchorElement = document.createElement("a");
-        searResultListAnchorElement.setAttribute(
-            "href",
-            `/company.html?symbol=${symbol}`
-        );
-        searResultListAnchorElement.classList.add("ml-2");
-        searResultListAnchorElement.textContent = `${name} (${symbol})`;
-        const searResultListSpanElement = document.createElement("span");
-        searResultListSpanElement.textContent = `(${changes})`;
-        ScriptDataHandling.changeColorOfPriceChanges(
-            changes,
-            searResultListSpanElement
-        );
-        ScriptPageHandling.appendChildrenElementsToFather(
-            searResultListLIElement,
-            searResultListImgElement,
-            searResultListAnchorElement,
-            searResultListSpanElement
-        );
-        ScriptPageHandling.appendChildrenElementsToFather(
-            searResultListULElement,
-            searResultListLIElement
-        );
-    }
-}
+//             const { companyName, image, changes, symbol } = company[0];
+//             return createListItem(image, symbol, companyName, changes);
+//         })
+//     );
+//     renderSearchResults(mapedCompanies);
+//     searchSpinner.classList.add("invisible");
+// };
 
-// -------------- Create the search result windows after fetchng the data and creating the list of elements  ------------
+// // -----------------------------------Run the search after pressing the button------------------------------
 
-ScriptPageHandling.searchResults = async function(event) {
-    ScriptDataHandling.searchResultList.textContent = "";
-    event.preventDefault();
-    searchSpinner.classList.remove("invisible");
-    const companies = await ScriptRequestHandling.fetchSearchData();
-    const mapedCompanies = await Promise.all(
-        companies.map(async(company) => {
-            company = await ScriptRequestHandling.fetchCompanyInfo(company.symbol);
-
-            const { companyName, image, changes, symbol } = company[0];
-            return createListItem(image, symbol, companyName, changes);
-        })
-    );
-    renderSearchResults(mapedCompanies);
-    searchSpinner.classList.add("invisible");
-};
-
-// -----------------------------------Run the search after pressing the button------------------------------
-
-ScriptPageHandling.searchButton.addEventListener(
-    "click",
-    ScriptPageHandling.searchResults
-);
+// ScriptPageHandling.searchButton.addEventListener(
+//     "click",
+//     ScriptPageHandling.searchResults
+// );

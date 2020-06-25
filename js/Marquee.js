@@ -26,8 +26,8 @@ class Marquee {
 
     // ---------------  append multiple  children tags to one parrent------------------
     appendChildrenElementsToFather = function(father, ...children) {
-        for (child of children) {
-            father.appendChild(child);
+        for (let i = 0; i < children.length; i++) {
+            father.appendChild(children[i]);
         }
     };
 
