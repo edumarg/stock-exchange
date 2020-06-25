@@ -2,14 +2,14 @@ function SearchBar(element) {
     this.element = element;
 
     /// ---------------- Setting Multiple attibutes to one element-----------------------
-    this.setElementAttributes = function(element, attributes) {
+    let setElementAttributes = function(element, attributes) {
         for (key in attributes) {
             element.setAttribute(key, attributes[key]);
         }
     };
 
     // ----------------------- Appending multiple children to one parent----------------------
-    this.appendChildrenElementsToFather = function(father, ...children) {
+    let appendChildrenElementsToFather = function(father, ...children) {
         for (child of children) {
             father.appendChild(child);
         }
@@ -43,7 +43,7 @@ function SearchBar(element) {
         searchBarDiv.appendChild(searchBarForm);
         const searchBarInput = document.createElement("input");
         searchBarInput.classList.add("form-control", "mr-sm-2");
-        this.setElementAttributes(searchBarInput, {
+        setElementAttributes(searchBarInput, {
             id: "searchInput",
             type: "search",
             placeholder: "Search",
@@ -60,7 +60,7 @@ function SearchBar(element) {
         searchBarButton.textContent = "Search";
         const searchBarDivforSpiner = document.createElement("div");
         searchBarDivforSpiner.classList.add("spinner-border", "invisible", "ml-3");
-        this.setElementAttributes(searchBarDivforSpiner, {
+        setElementAttributes(searchBarDivforSpiner, {
             role: "status",
             id: "searchSpinner",
         });
@@ -68,7 +68,7 @@ function SearchBar(element) {
         searchBarSpinner.classList.add("sr-only");
         searchBarSpinner.textContent = "Loading...";
         searchBarDivforSpiner.appendChild(searchBarSpinner);
-        this.appendChildrenElementsToFather(
+        appendChildrenElementsToFather(
             // append input, button and spinner to the form
             searchBarForm,
             searchBarInput,
@@ -79,4 +79,6 @@ function SearchBar(element) {
         searchBarNavItem.appendChild(searchBarDiv); //append al the componnent to the bar
         searchBar.appendChild(searchBarNavItem); // append all the navbad to her divisio on the HTML
     };
+
+    this.createSearchBar();
 }
