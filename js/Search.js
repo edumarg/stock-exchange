@@ -82,7 +82,7 @@ class SearchBar {
             "justify-content-center"
         );
         searchBar.appendChild(searchBarNavItem);
-        // const searchBarDiv = document.createElement("div");
+
         const searchBarForm = document.createElement("form");
         searchBarForm.classList.add(
             "input-group",
@@ -93,7 +93,7 @@ class SearchBar {
             "align-items",
             "flex-nowrap"
         );
-        // searchBarDiv.appendChild(searchBarForm);
+
         const searchBarInput = document.createElement("input");
         searchBarInput.classList.add("form-control", "mr-sm-2");
         this.setElementAttributes(searchBarInput, {
@@ -128,7 +128,7 @@ class SearchBar {
             searchBarButton,
             searchBarDivforSpiner
         );
-        // searchBarDiv.appendChild(searchBarForm); //append form to the division
+
         searchBarNavItem.appendChild(searchBarForm); //append al the componnent to the bar
         searchBar.appendChild(searchBarNavItem); // append all the navbad to her divisio on the HTML
     };
