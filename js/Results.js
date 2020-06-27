@@ -20,6 +20,8 @@ class Results {
     };
 
     renderResults = function(companies) {
+        const searchInput = document.getElementById("searchInput");
+        const textToHighlight = RegExp(searchInput.value, "i");
         for (let company of companies) {
             const { name, image, symbol, changes } = company;
             const searResultListULElement = document.createElement("ul");
@@ -36,7 +38,14 @@ class Results {
                 `/company.html?symbol=${symbol}`
             );
             searResultListAnchorElement.classList.add("ml-2");
-            searResultListAnchorElement.textContent = `${name} (${symbol})`;
+            console.log("RegExp", textToHighlight);
+            const anchorString = `${name} (${symbol})`;
+            // searResultListAnchorElement.textContent = `${name} (${symbol})`;
+            searResultListAnchorElement.innerHTML = anchorString.replace(
+                textToHighlight,
+                `<mark class ="m-0 p-0 bg-warning">${searchInput.value} </mark>`
+            );
+
             const searResultListSpanElement = document.createElement("span");
             searResultListSpanElement.textContent = `(${changes})`;
             this.changeColorOfPriceChanges(changes, searResultListSpanElement);

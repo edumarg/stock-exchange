@@ -39,7 +39,12 @@ class SearchBar {
     };
 
     searchResults = async function(callback) {
-        searchInput.addEventListener("input", async(event) => {
+        // searchInput.addEventListener("input", async(event) => {
+        // upper line is for auto search.
+
+        searchButton.addEventListener("click", async(event) => {
+            event.preventDefault();
+
             searchResultList.textContent = "";
             searchSpinner.classList.remove("invisible");
             const companies = await this.fetchSearchData();
