@@ -19,6 +19,25 @@ class Results {
         }
     };
 
+    highLightText = function(string, textToHighlight) {
+        if (!string.match(textToHighlight)) {
+            return string;
+        }
+        const matchStartPosition = string.match(textToHighlight).index;
+        const matchEndPosition =
+            matchStartPosition + string.match(textToHighlight)[0].toString().length;
+        const originalTextFoundByRegex = string.substring(
+            matchStartPosition,
+            matchEndPosition
+        );
+        console.log("originalTextFoundByRegex", originalTextFoundByRegex);
+        const replacedString = string.replace(
+            textToHighlight,
+            `<mark class="m-0 p-0 bg-warning">${originalTextFoundByRegex}</mark>`
+        );
+        return replacedString;
+    };
+
     renderResults = function(companies) {
         const searchInput = document.getElementById("searchInput");
         const textToHighlight = RegExp(searchInput.value, "i");
@@ -38,13 +57,19 @@ class Results {
                 `/company.html?symbol=${symbol}`
             );
             searResultListAnchorElement.classList.add("ml-2");
-            console.log("RegExp", textToHighlight);
-            const anchorString = `${name} (${symbol})`;
+            searResultListAnchorElement.innerHTML = `${this.highLightText(
+        name,
+        textToHighlight
+      )} (${this.highLightText(symbol, textToHighlight)})`;
+            // reemplazar con regex
+
+            // searResultListAnchorElement.innerHTML = anchorString.replace(
+            //     textToHighlight,
+            //     `<mark class ="m-0 p-0 bg-warning">${searchInput.value} </mark>`
+            // );
+
+            // texto original
             // searResultListAnchorElement.textContent = `${name} (${symbol})`;
-            searResultListAnchorElement.innerHTML = anchorString.replace(
-                textToHighlight,
-                `<mark class ="m-0 p-0 bg-warning">${searchInput.value} </mark>`
-            );
 
             const searResultListSpanElement = document.createElement("span");
             searResultListSpanElement.textContent = `(${changes})`;
