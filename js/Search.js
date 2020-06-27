@@ -39,8 +39,7 @@ class SearchBar {
     };
 
     searchResults = async function(callback) {
-        searchButton.addEventListener("click", async(event) => {
-            event.preventDefault();
+        searchInput.addEventListener("input", async(event) => {
             searchResultList.textContent = "";
             searchSpinner.classList.remove("invisible");
             const companies = await this.fetchSearchData();
@@ -102,15 +101,10 @@ class SearchBar {
             placeholder: "Search",
             "aria-label": "Search",
         });
-        const searchBarButton = document.createElement("button");
-        searchBarButton.classList.add(
-            "btn",
-            "btn-outline-success",
-            "my-sm-0",
-            "m-0"
-        );
-        searchBarButton.setAttribute("id", "searchButton");
-        searchBarButton.textContent = "Search";
+        const searchButton = document.createElement("button");
+        searchButton.classList.add("btn", "btn-outline-success", "my-sm-0", "m-0");
+        searchButton.setAttribute("id", "searchButton");
+        searchButton.textContent = "Search";
         const searchBarDivforSpiner = document.createElement("div");
         searchBarDivforSpiner.classList.add("spinner-border", "invisible", "ml-3");
         this.setElementAttributes(searchBarDivforSpiner, {
@@ -125,7 +119,7 @@ class SearchBar {
             // append input, button and spinner to the form
             searchBarForm,
             searchBarInput,
-            searchBarButton,
+            searchButton,
             searchBarDivforSpiner
         );
 

@@ -20,8 +20,8 @@ class Results {
     };
 
     renderResults = function(companies) {
-        for (let comapany of companies) {
-            const { name, image, symbol, changes } = comapany;
+        for (let company of companies) {
+            const { name, image, symbol, changes } = company;
             const searResultListULElement = document.createElement("ul");
             searchResultList.appendChild(searResultListULElement);
             searResultListULElement.classList.add("list-group-flush");
