@@ -36,6 +36,10 @@ class Results {
         return replacedString;
     };
 
+    printCompanyForCompare = function(company) {
+        console.log(company);
+    };
+
     renderResults = function(companies) {
         for (let company of companies) {
             const { name, image, symbol, changes } = company;
@@ -59,12 +63,28 @@ class Results {
 
             const searResultListSpanElement = document.createElement("span");
             searResultListSpanElement.textContent = `(${changes})`;
+            searResultListSpanElement.classList.add("ml-2");
             this.changeColorOfPriceChanges(changes, searResultListSpanElement);
+
+            const searchResultsCompareButton = document.createElement("button");
+            searchResultsCompareButton.textContent = `Compare`;
+            searchResultsCompareButton.classList.add(
+                "btn",
+                "btn-primary",
+                "compare-button",
+                "ml-2"
+            );
+            searchResultsCompareButton.addEventListener(
+                "click",
+                this.printCompanyForCompare.bind(this, company)
+            );
+
             this.appendChildrenElementsToFather(
                 searResultListLIElement,
                 searResultListImgElement,
                 searResultListAnchorElement,
-                searResultListSpanElement
+                searResultListSpanElement,
+                searchResultsCompareButton
             );
             this.appendChildrenElementsToFather(
                 searResultListULElement,
