@@ -47,7 +47,14 @@ class Results {
             searchResultList.appendChild(searResultListULElement);
             searResultListULElement.classList.add("list-group-flush");
             const searResultListLIElement = document.createElement("li");
-            searResultListLIElement.classList.add("list-group-item");
+            searResultListLIElement.classList.add(
+                "list-group-item",
+                "d-flex",
+                "flex-row",
+                "justify-content-between"
+            );
+            const searResultCompanyInfoDiv = document.createElement("div"); // new
+
             const searResultListImgElement = document.createElement("img");
             searResultListImgElement.setAttribute("src", `${image}`);
             searResultListImgElement.classList.add("search-img", "ml-2");
@@ -66,6 +73,8 @@ class Results {
             searResultListSpanElement.classList.add("ml-2");
             this.changeColorOfPriceChanges(changes, searResultListSpanElement);
 
+            const searResultCompareButtonDiv = document.createElement("div"); //new
+
             const searchResultsCompareButton = document.createElement("button");
             searchResultsCompareButton.textContent = `Compare`;
             searchResultsCompareButton.classList.add(
@@ -80,14 +89,28 @@ class Results {
             );
 
             this.appendChildrenElementsToFather(
-                searResultListLIElement,
+                // searResultListLIElement,
+                searResultCompanyInfoDiv,
                 searResultListImgElement,
                 searResultListAnchorElement,
-                searResultListSpanElement,
-                searchResultsCompareButton
+                searResultListSpanElement
+                // searchResultsCompareButton
             );
             this.appendChildrenElementsToFather(
+                searResultCompareButtonDiv,
+                searchResultsCompareButton
+            );
+
+            this.appendChildrenElementsToFather(
+                searResultListLIElement,
+                // searResultListLIElement
+                searResultCompanyInfoDiv,
+                searResultCompareButtonDiv
+            );
+
+            this.appendChildrenElementsToFather(
                 searResultListULElement,
+                // searResultListLIElement
                 searResultListLIElement
             );
         }
