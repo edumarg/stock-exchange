@@ -19,6 +19,24 @@ class Results {
         }
     };
 
+    createHTMLElement = function(
+        element,
+        classes = [],
+        attributes = {},
+        text = ""
+    ) {
+        const createElement = document.createElement(element);
+        for (let i = 0; i < classes.length; i++) {
+            createElement.classList.add(classes[i]);
+        }
+
+        for (let key in attributes) {
+            createElement.setAttribute(key, attributes[key]);
+        }
+        createElement.textContent = text;
+        return createElement;
+    };
+
     highLightText = function(string) {
         const textToHighlight = RegExp(searchInput.value, "i");
         if (!string.match(textToHighlight)) return string;
@@ -41,48 +59,50 @@ class Results {
     };
 
     renderResults = function(companies) {
-        const searResultListULElement = document.createElement("ul");
+        const searResultListULElement = this.createHTMLElement("ul", [
+            "list-group-flush",
+        ]);
         searchResultList.appendChild(searResultListULElement);
-        searResultListULElement.classList.add("list-group-flush");
+
         for (let company of companies) {
             const { name, image, symbol, changes } = company;
-            const searResultListLIElement = document.createElement("li");
-            searResultListLIElement.classList.add(
+
+            const searResultListLIElement = this.createHTMLElement("li", [
                 "list-group-item",
                 "d-flex",
                 "flex-row",
-                "justify-content-between"
-            );
-            const searResultCompanyInfoDiv = document.createElement("div"); // new
+                "justify-content-between",
+            ]);
 
-            const searResultListImgElement = document.createElement("img");
-            searResultListImgElement.setAttribute("src", `${image}`);
-            searResultListImgElement.classList.add("search-img", "ml-2");
-            const searResultListAnchorElement = document.createElement("a");
-            searResultListAnchorElement.setAttribute(
-                "href",
-                `/company.html?symbol=${symbol}`
+            const searResultCompanyInfoDiv = this.createHTMLElement("div");
+
+            const searResultListImgElement = this.createHTMLElement(
+                "img", ["search-img", "ml-2"], { src: `${image}` }
             );
-            searResultListAnchorElement.classList.add("ml-2");
+
+            const searResultListAnchorElement = this.createHTMLElement(
+                "a", ["ml-2"], {
+                    href: `/company.html?symbol=${symbol}`,
+                }
+            );
             searResultListAnchorElement.innerHTML = `${this.highLightText(
         name
       )} (${this.highLightText(symbol)})`;
 
-            const searResultListSpanElement = document.createElement("span");
-            searResultListSpanElement.textContent = `(${changes})`;
-            searResultListSpanElement.classList.add("ml-2");
+            const searResultListSpanElement = this.createHTMLElement(
+                "span", ["ml-2"], {},
+                `(${changes})`
+            );
+
             this.changeColorOfPriceChanges(changes, searResultListSpanElement);
 
-            const searResultCompareButtonoDiv = document.createElement("div"); //new
+            const searResultCompareButtonoDiv = this.createHTMLElement("div");
 
-            const searchResultsCompareButton = document.createElement("button");
-            searchResultsCompareButton.textContent = `Compare`;
-            searchResultsCompareButton.classList.add(
-                "btn",
-                "btn-primary",
-                "compare-button",
-                "ml-2"
+            const searchResultsCompareButton = this.createHTMLElement(
+                "button", ["btn", "btn-primary", "compare-button", "ml-2"], {},
+                "Compare"
             );
+
             searchResultsCompareButton.addEventListener("click", () => {
                 this.printCompanyForCompare(company);
             });

@@ -139,14 +139,13 @@ class SearchBar {
         searchBarDivforSpiner.appendChild(searchBarSpinner);
 
         this.appendChildrenElementsToFather(
-            // append input, button and spinner to the form
             searchBarForm,
             searchBarInput,
             searchButton,
             searchBarDivforSpiner
         );
 
-        searchBarNavItem.appendChild(searchBarForm); //append al the componnent to the bar
-        searchBar.appendChild(searchBarNavItem); // append all the navbad to her divisio on the HTML
+        searchBarNavItem.appendChild(searchBarForm);
+        searchBar.appendChild(searchBarNavItem);
     };
 }
