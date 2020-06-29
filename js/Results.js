@@ -52,7 +52,6 @@ class Results {
                 "d-flex",
                 "flex-row",
                 "justify-content-between"
-                // "flex-no-wrap"
             );
             const searResultCompanyInfoDiv = document.createElement("div"); // new
 
@@ -84,19 +83,15 @@ class Results {
                 "compare-button",
                 "ml-2"
             );
-            searchResultsCompareButton.addEventListener(
-                "click",
-                // this.printCompanyForCompare.bind(this, company)
-                this.printCompanyForCompare.bind(this, company)
-            );
+            searchResultsCompareButton.addEventListener("click", () => {
+                this.printCompanyForCompare(company);
+            });
 
             this.appendChildrenElementsToFather(
-                // searResultListLIElement,
                 searResultCompanyInfoDiv,
                 searResultListImgElement,
                 searResultListAnchorElement,
                 searResultListSpanElement
-                // searchResultsCompareButton
             );
             this.appendChildrenElementsToFather(
                 searResultCompareButtonoDiv,

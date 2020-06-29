@@ -11,68 +11,21 @@
 </head>
 
 <body>
-    <!-- ↓↓ Start Row for search bar ↓↓ -->
-    <div class="container-fluid">
-        <!-- ↓↓ Start Row main Title ↓↓ -->
-        <div class="row">
-            <div class="col-lx-12 d-flex flex align-items flex-nowrap m-5">
-                <h1 class="display-3">
-                    Financial Summary
-                </h1>
-            </div>
-            <div class="spinner-border invisible mr-3 mt-5 text-center" role="status" id="loadSpinner">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-        <!-- ↑↑ End Row for main Title ↑↑ -->
-    </div>
-    <!-- ↑↑ End Row for search bar ↑↑ -->
-
-    <!-- ↓↓ Start Row Company profile  ↓↓ -->
-    <div class="row">
-        <div class="col-xl-12">
-            <!-- ↓↓ Start Row Company info  ↓↓ -->
-            <div class="row">
-                <div class="col-xl-12 d-flex align-items flex-nowrap ml-5 mb-3">
-                    <div>
-                        <img id="companyLogo" />
-                    </div>
-                    <div id="companyName" class="ml-5 mr-5"></div>
-                    <div id="companySymbol"></div>
-                </div>
-            </div>
-            <!-- ↑↑ End Row for company info ↑↑ -->
-
-            <!-- ↓↓ Start Row Company financial numbers  ↓↓ -->
-            <div class="row">
-                <div class="col-xl-12 d-flex align-items flex-nowrap">
-                    <div id="companyPrice" class="ml-5 mr-5"></div>
-                    <div id="companyPriceChanges" class="mr-5"></div>
-                    <div id="companyBeta" class=""></div>
-                </div>
-            </div>
-            <!-- ↑↑ End Row for company financial numbers ↑↑ -->
-
-            <!-- ↓↓ Start Row Company description  ↓↓ -->
-            <div class="row">
-                <div class="col-xl-12">
-                    <p id="companyDescription" class="m-5"></p>
-                </div>
-            </div>
-            <!-- ↑↑ End Row for company description ↑↑ -->
-
-            <!-- ↓↓ Start Row Historic price graphs  ↓↓ -->
-            <div class="row">
-                <div class="col-xl-12">
-                    <canvas id="companyPriceGraph" width="1400" min-height="500"></canvas>
-                </div>
-            </div>
-            <!-- ↑↑ End Row for Historic price graph ↑↑ -->
-        </div>
-        <!-- ↑↑ End Row for Company profile ↑↑ -->
-    </div>
+    <div id="compInfo" class="container-fluid mt-5 shadow-lg p-5 bg-white rounded"></div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 <script src="./js/company.js"></script>
+<script>
+    (async function() {
+        queryString = new URLSearchParams(window.location.search);
+        queryStringSymbol = queryString.get("symbol");
+        const compInfo = new CompanyInfo(
+            document.getElementById("compInfo"),
+            queryStringSymbol
+        );
+        await compInfo.load();
+        await compInfo.createHistoricalChart();
+    })();
+</script>
 
 </html>
