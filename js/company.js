@@ -16,14 +16,13 @@ class CompanyInfo {
     };
 
     fetchCompanyHistoricalPrice = async function() {
-        // loadSpinner.classList.remove("invisible");
         const PATH_HISTORIC_PRICE = `api/v3/historical-price-full/${this.symbol}?serietype=line`;
         const response = await fetch(
             `${this.URL}/${PATH_HISTORIC_PRICE}&${this.API_KEY}`
         );
         const object = await response.json();
         const historicalData = await object.historical;
-        // loadSpinner.classList.add("invisible");
+
         return historicalData;
     };
 
@@ -38,10 +37,22 @@ class CompanyInfo {
         }
     };
 
-    setElementAttributes = function(element, attributes) {
-        for (let key in attributes) {
-            element.setAttribute(key, attributes[key]);
+    createHTMLElement = function(
+        element,
+        classes = [],
+        attributes = {},
+        text = ""
+    ) {
+        const createElement = document.createElement(element);
+        for (let i = 0; i < classes.length; i++) {
+            createElement.classList.add(classes[i]);
         }
+
+        for (let key in attributes) {
+            createElement.setAttribute(key, attributes[key]);
+        }
+        createElement.textContent = text;
+        return createElement;
     };
 
     appendChildrenElementsToFather = function(father, ...children) {
@@ -50,71 +61,74 @@ class CompanyInfo {
         }
     };
 
-    createHTMLElemenst = function(company) {
+    createPage = function(company) {
         const { image, companyName, price, beta, description, changes } = company;
         const compInfo = this.element;
-        const maintitleRow = document.createElement("div");
-        maintitleRow.classList.add("row");
-        maintitleRow.setAttribute("id", "mainTitleRow");
-        const mainTitleCol = document.createElement("div");
-        mainTitleCol.classList.add(
-            "col-lx-12",
-            "d-flex",
-            "flex",
-            "align-items",
-            "flex-nowrap",
-            "m-5"
-        );
-        const mainTitle = document.createElement("h1");
-        mainTitle.classList.add("display-3");
-        mainTitle.textContent = "Financial Summary";
-        const loadSpinner = document.createElement("div");
-        loadSpinner.classList.add(
-            "spinner-border",
-            "invisible",
-            "mr-3",
-            "mt-5",
-            "text-center"
-        );
-        this.setElementAttributes(loadSpinner, {
-            id: "loadSpinner",
-            role: "status",
+        const maintitleRow = this.createHTMLElement("div", ["row"], {
+            id: "mainTitleRow",
         });
-        const spinerSpan = document.createElement("span");
-        spinerSpan.classList.add("sr-only");
-        spinerSpan.textContent = "Loading...";
+        const mainTitleCol = this.createHTMLElement(
+            "div", ["col-lx-12", "d-flex", "flex", "align-items", "flex-nowrap", "m-5"], { id: "mainTitleCol" }
+        );
+
+        const mainTitle = this.createHTMLElement(
+            "h1", ["display-3"], { id: "mainTitle" },
+            "Financial Summary"
+        );
+
+        const loadSpinner = this.createHTMLElement(
+            "div", ["spinner-border", "invisible", "mr-3", "mt-5", "text-center"], { id: "loadSpinner", role: "status" }
+        );
+
+        const spinerSpan = this.createHTMLElement(
+            "span", ["sr-only"], { id: "spinerSpan" },
+            "Loading..."
+        );
+
         loadSpinner.appendChild(spinerSpan);
         this.appendChildrenElementsToFather(mainTitleCol, mainTitle, loadSpinner);
         maintitleRow.appendChild(mainTitleCol);
 
-        const companyInfoRow = document.createElement("div");
-        companyInfoRow.classList.add("row");
-        const companyInfoCol = document.createElement("div");
-        companyInfoCol.classList.add("col-xl-12");
+        const companyInfoRow = this.createHTMLElement("div", ["row"], {
+            id: "companyInfoRow",
+        });
+        const companyInfoCol = this.createHTMLElement("div", ["col-xl-12"], {
+            id: "companyInfoCol",
+        });
         companyInfoRow.appendChild(companyInfoCol);
 
-        const companyTitlerow = document.createElement("div");
-        companyTitlerow.classList.add("row");
-        const companyTitleCol = document.createElement("div");
-        companyTitleCol.classList.add(
-            "col-xl-12",
-            "d-flex",
-            "align-items-center",
-            "flex-nowrap",
-            "ml-5",
-            "mb-3"
+        const companyTitlerow = this.createHTMLElement("div", ["row"], {
+            id: "companyTitlerow",
+        });
+        const companyTitleCol = this.createHTMLElement(
+            "div", [
+                "col-xl-12",
+                "d-flex",
+                "align-items-center",
+                "flex-nowrap",
+                "ml-5",
+                "mb-3",
+            ], { id: "companyTitleCol" }
         );
         companyTitlerow.appendChild(companyTitleCol);
 
-        const companyLogoDiv = document.createElement("div");
-        const companyLogoImg = document.createElement("img");
-        companyLogoImg.src = image;
+        const companyLogoDiv = this.createHTMLElement("div", ["none"], {
+            id: "companyLogoDiv",
+        });
+        const companyLogoImg = this.createHTMLElement("img", ["none"], {
+            id: "companyLogoImg",
+            src: image,
+        });
         companyLogoDiv.appendChild(companyLogoImg);
-        const companyNameP = document.createElement("p");
-        companyNameP.classList.add("ml-5", "mr-5");
-        companyNameP.textContent = `Company name: ${companyName}`;
-        const companySymbol = document.createElement("p");
-        companySymbol.textContent = `(${this.symbol})`;
+
+        const companyNameP = this.createHTMLElement(
+            "p", ["ml-5", "mr-5"], { id: "companyNameP" },
+            `Company name: ${companyName}`
+        );
+        const companySymbol = this.createHTMLElement(
+            "p", ["none"], {},
+            `(${this.symbol})`
+        );
         this.appendChildrenElementsToFather(
             companyTitleCol,
             companyLogoDiv,
@@ -122,25 +136,28 @@ class CompanyInfo {
             companySymbol
         );
 
-        const companyFinancialNumbersRow = document.createElement("div");
-        companyFinancialNumbersRow.classList.add("row");
-        const companyFinancialNumbersCol = document.createElement("div");
-        companyFinancialNumbersCol.classList.add(
-            "col-xl-12",
-            "d-flex",
-            "align-items",
-            "flex-nowrap"
+        const companyFinancialNumbersRow = this.createHTMLElement("div", ["row"], {
+            id: "companyFinancialNumbersRow",
+        });
+        const companyFinancialNumbersCol = this.createHTMLElement(
+            "div", ["col-xl-12", "d-flex", "align-items", "flex-nowrap"], { id: "companyFinancialNumbersCol" }
         );
         companyFinancialNumbersRow.appendChild(companyFinancialNumbersCol);
-        const companyPrice = document.createElement("p");
-        companyPrice.classList.add("ml-5", "mr-5");
-        companyPrice.textContent = `Current price: $${price}`;
-        const companyPriceChanges = document.createElement("p");
-        companyPriceChanges.setAttribute("id", "companyPriceChanges");
-        companyPriceChanges.classList.add("ml-5", "mr-5");
-        companyPriceChanges.textContent = `(${changes})`;
-        const companyBeta = document.createElement("p");
-        companyBeta.textContent = `beta: ${beta}`;
+
+        const companyPrice = this.createHTMLElement(
+            "p", ["ml-5", "mr-5"], { id: "companyPrice" },
+            `Current price: $${price}`
+        );
+        const companyPriceChanges = this.createHTMLElement(
+            "p", ["ml-5", "mr-5"], {
+                id: "companyPriceChanges",
+            },
+            `(${changes})`
+        );
+        const companyBeta = this.createHTMLElement(
+            "p", ["none"], { id: "companyBeta" },
+            `beta: ${beta}`
+        );
 
         this.appendChildrenElementsToFather(
             companyFinancialNumbersCol,
@@ -149,14 +166,17 @@ class CompanyInfo {
             companyBeta
         );
 
-        const companyDescriptionRow = document.createElement("div");
-        companyDescriptionRow.classList.add("row");
-        const companyDescriptionCol = document.createElement("div");
-        companyDescriptionCol.classList.add("col-xl-12");
+        const companyDescriptionRow = this.createHTMLElement("div", ["row"], {
+            id: "companyDescriptionRow",
+        });
+        const companyDescriptionCol = this.createHTMLElement("div", ["col-xl-12"], {
+            id: "companyDescriptionCol",
+        });
         companyDescriptionRow.appendChild(companyDescriptionCol);
-        const companyDescription = document.createElement("p");
-        companyDescription.classList.add("m-5");
-        companyDescription.textContent = description;
+        const companyDescription = this.createHTMLElement(
+            "p", ["m-5"], { id: "companyDescriptionRow" },
+            description
+        );
         companyDescriptionCol.appendChild(companyDescription);
 
         this.appendChildrenElementsToFather(
@@ -166,13 +186,14 @@ class CompanyInfo {
             companyDescriptionRow
         );
 
-        const chartRow = document.createElement("div");
-        chartRow.classList.add("row");
-        const chartCol = document.createElement("div");
-        chartCol.classList.add("col-xl-12");
+        const chartRow = this.createHTMLElement("div", ["row"], {
+            id: "chartRow",
+        });
+        const chartCol = this.createHTMLElement("div", ["col-xl-12"], {
+            id: "chartCol",
+        });
         chartRow.appendChild(chartCol);
-        const companyPriceGraph = document.createElement("canvas");
-        this.setElementAttributes(companyPriceGraph, {
+        const companyPriceGraph = this.createHTMLElement("canvas", ["none"], {
             id: "companyPriceGraph",
             width: "1400",
             "min-height": "500",
@@ -187,13 +208,12 @@ class CompanyInfo {
             companyDescriptionRow,
             chartRow
         );
-
         this.changeColorOfPriceChanges(changes);
     };
 
     load = async function() {
         const company = await this.fetchCompanyInfo();
-        this.createHTMLElemenst(company);
+        this.createPage(company);
         loadSpinner.classList.remove("invisible");
     };
 
