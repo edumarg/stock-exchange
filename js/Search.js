@@ -30,24 +30,6 @@ class SearchBar {
         return company;
     };
 
-    searchResults = async function(callback) {
-        searchButton.addEventListener("click", async(event) => {
-            event.preventDefault();
-            searchResultList.textContent = "";
-            searchSpinner.classList.remove("invisible");
-            const companies = await this.fetchSearchData();
-            const mapedCompanies = await Promise.all(
-                companies.map(async(company) => {
-                    company = await this.fetchCompanyInfo(company.symbol);
-                    const { companyName, image, changes, symbol } = company[0];
-                    return this.createListItem(image, symbol, companyName, changes);
-                })
-            );
-            callback(mapedCompanies);
-            searchSpinner.classList.add("invisible");
-        });
-    };
-
     createSearchBar = function() {
         const searchBar = this.element;
         const searchBarNavItem = createHTMLElement("nav", [
@@ -107,5 +89,25 @@ class SearchBar {
 
         searchBarNavItem.appendChild(searchBarForm);
         searchBar.appendChild(searchBarNavItem);
+    };
+
+    searchResults = async function(callback) {
+        searchButton.addEventListener("click", async(event) => {
+            if (searchInput.value) {
+                event.preventDefault();
+                searchResultList.textContent = "";
+                searchSpinner.classList.remove("invisible");
+                const companies = await this.fetchSearchData();
+                const mapedCompanies = await Promise.all(
+                    companies.map(async(company) => {
+                        company = await this.fetchCompanyInfo(company.symbol);
+                        const { companyName, image, changes, symbol } = company[0];
+                        return this.createListItem(image, symbol, companyName, changes);
+                    })
+                );
+                callback(mapedCompanies);
+                searchSpinner.classList.add("invisible");
+            }
+        });
     };
 }

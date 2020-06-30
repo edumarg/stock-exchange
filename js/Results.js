@@ -1,6 +1,7 @@
 class Results {
     constructor(companies) {
         this.companies = companies;
+        this.companiesForCompare = [];
     }
 
     highLightText = function(string) {
@@ -18,10 +19,6 @@ class Results {
             `<mark class="m-0 p-0 bg-warning">${originalTextFoundByRegex}</mark>`
         );
         return replacedString;
-    };
-
-    printCompanyForCompare = function(company) {
-        console.log(company);
     };
 
     renderResults = function(companies) {
@@ -49,9 +46,16 @@ class Results {
             const searResultListAnchorElement = createHTMLElement("a", ["ml-2"], {
                 href: `/company.html?symbol=${symbol}`,
             });
-            searResultListAnchorElement.innerHTML = `${this.highLightText(
-        name
-      )} (${this.highLightText(symbol)})`;
+            const searResultNameSpanElement = createHTMLElement("span", ["name"]);
+            const searResultSymbolSpanElement = createHTMLElement("span", ["symbol"]);
+            searResultNameSpanElement.innerHTML = `${this.highLightText(name)}`;
+            searResultSymbolSpanElement.innerHTML = `(${this.highLightText(symbol)})`;
+
+            appendChildrenElementsToFather(
+                searResultListAnchorElement,
+                searResultNameSpanElement,
+                searResultSymbolSpanElement
+            );
 
             const searResultListSpanElement = createHTMLElement(
                 "span", ["ml-2"], {},
@@ -62,14 +66,10 @@ class Results {
 
             const searResultCompareButtonoDiv = createHTMLElement("div");
 
-            const searchResultsCompareButton = createHTMLElement(
-                "button", ["btn", "btn-primary", "compare-button", "ml-2"], {},
+            const searchResultCompareButton = createHTMLElement(
+                "button", ["compare-button", "btn", "btn-primary", "ml-2"], {},
                 "Compare"
             );
-
-            searchResultsCompareButton.addEventListener("click", () => {
-                this.printCompanyForCompare(company);
-            });
 
             appendChildrenElementsToFather(
                 searResultCompanyInfoDiv,
@@ -79,7 +79,7 @@ class Results {
             );
             appendChildrenElementsToFather(
                 searResultCompareButtonoDiv,
-                searchResultsCompareButton
+                searchResultCompareButton
             );
 
             appendChildrenElementsToFather(
@@ -92,6 +92,48 @@ class Results {
                 searResultListULElement,
                 searResultListLIElement
             );
+        }
+        this.compareButtonsEventListener();
+    };
+
+    addCompaniesToCompare = function(company) {
+        if (
+            this.companiesForCompare.indexOf(company) === -1 &&
+            this.companiesForCompare.length < 3
+        ) {
+            this.companiesForCompare.push(company);
+
+            const companyToCompareButton = createHTMLElement(
+                "button", ["mr-3", "btn", "btn-primary"], {},
+                `${company} x`
+            );
+            companiesToCompareBar.appendChild(companyToCompareButton);
+            let symbolsForHref = this.companiesForCompare.join();
+            let CompareCompaniesButtonHref = `/compare.html?symbol=${symbolsForHref}`;
+            compareButtonAnchor.setAttribute("href", CompareCompaniesButtonHref);
+
+            companyToCompareButton.addEventListener("click", () => {
+                let symbolToRemove = event.target.textContent;
+                symbolToRemove = symbolToRemove.replace(" x", "");
+                let indextoRemove = this.companiesForCompare.indexOf(symbolToRemove);
+                this.companiesForCompare.splice(indextoRemove, 1);
+                symbolsForHref = this.companiesForCompare.join();
+                CompareCompaniesButtonHref = `/compare.html?symbol=${symbolsForHref}`;
+                compareButtonAnchor.setAttribute("href", CompareCompaniesButtonHref);
+                event.target.remove();
+            });
+        }
+    };
+
+    compareButtonsEventListener = function() {
+        const comparebuttons = document.querySelectorAll(".compare-button");
+        const companySymbols = document.querySelectorAll(".symbol");
+        for (let i = 0; i < comparebuttons.length; i++) {
+            comparebuttons[i].addEventListener("click", (event) => {
+                this.addCompaniesToCompare(
+                    companySymbols[i].textContent.replace("(", "").replace(")", "")
+                );
+            });
         }
     };
 }

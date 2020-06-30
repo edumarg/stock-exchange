@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body class="container-fluid">
+    <div class="row" id="compareInfo"></div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src="./js/helper_functions.js"></script>
+<script src="./js/URLdata.js"></script>
+<script src="js/comparePage.js"></script>
+<script>
+    (async function() {
+        queryString = new URLSearchParams(window.location.search);
+        queryStringSymbols = queryString.get("symbol");
+        const comapreInfo = new CompareInfo(
+            document.getElementById("compareInfo"),
+            queryStringSymbols
+        );
+        comapreInfo.load();
+    })();
+</script>
+
+</html>

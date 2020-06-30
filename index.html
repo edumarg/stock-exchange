@@ -18,6 +18,10 @@
     </div>
 
     <div class="row">
+        <div class="col-xl-12 d-flex" id="compareBar"></div>
+    </div>
+
+    <div class="row">
         <div class="col-xl-12" id="pageTitle">
             <h2 class="d-flex justify-content-center">
                 Search NASDAQ Stocks
@@ -42,10 +46,21 @@
 <script src="./js/Marquee.js"></script>
 <script src="./js/Search.js"></script>
 <script src="./js/Results.js"></script>
-
-<script type="module">
-    (async function () { const marquee = new Marquee(document.getElementById("stocksMarquee")); marquee.createMarquee(); const form = new SearchBar(document.getElementById("searchBar")); const results = new Results(document.getElementById("searchResultList"));
-    form.searchResults((companies) => { results.renderResults(companies); }); })();
+<script src="./js/CompareBar.js"></script>
+<script>
+    (async function() {
+        const marquee = new Marquee(document.getElementById("stocksMarquee"));
+        marquee.createMarquee();
+        const compareBar = new CompareBar(document.getElementById("compareBar"));
+        const form = new SearchBar(document.getElementById("searchBar"));
+        const results = new Results(document.getElementById("searchResultList"));
+        await form.searchResults((companies) => {
+            results.renderResults(companies);
+        });
+        await results.compareButtonsEventListener((symbol) => {
+            compareBar.addCompaniesToCompare(symbol);
+        });
+    })();
 </script>
 
 </html>
