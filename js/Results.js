@@ -3,40 +3,6 @@ class Results {
         this.companies = companies;
     }
 
-    appendChildrenElementsToFather = function(father, ...children) {
-        for (let child of children) {
-            father.appendChild(child);
-        }
-    };
-
-    changeColorOfPriceChanges = function(changes, element) {
-        if (changes >= 0) {
-            element.classList.add("positive-change");
-            element.classList.remove("negative-change");
-        } else {
-            element.classList.remove("positive-change");
-            element.classList.add("negative-change");
-        }
-    };
-
-    createHTMLElement = function(
-        element,
-        classes = [],
-        attributes = {},
-        text = ""
-    ) {
-        const createElement = document.createElement(element);
-        for (let i = 0; i < classes.length; i++) {
-            createElement.classList.add(classes[i]);
-        }
-
-        for (let key in attributes) {
-            createElement.setAttribute(key, attributes[key]);
-        }
-        createElement.textContent = text;
-        return createElement;
-    };
-
     highLightText = function(string) {
         const textToHighlight = RegExp(searchInput.value, "i");
         if (!string.match(textToHighlight)) return string;
@@ -59,7 +25,7 @@ class Results {
     };
 
     renderResults = function(companies) {
-        const searResultListULElement = this.createHTMLElement("ul", [
+        const searResultListULElement = createHTMLElement("ul", [
             "list-group-flush",
         ]);
         searchResultList.appendChild(searResultListULElement);
@@ -67,38 +33,36 @@ class Results {
         for (let company of companies) {
             const { name, image, symbol, changes } = company;
 
-            const searResultListLIElement = this.createHTMLElement("li", [
+            const searResultListLIElement = createHTMLElement("li", [
                 "list-group-item",
                 "d-flex",
                 "flex-row",
                 "justify-content-between",
             ]);
 
-            const searResultCompanyInfoDiv = this.createHTMLElement("div");
+            const searResultCompanyInfoDiv = createHTMLElement("div");
 
-            const searResultListImgElement = this.createHTMLElement(
+            const searResultListImgElement = createHTMLElement(
                 "img", ["search-img", "ml-2"], { src: `${image}` }
             );
 
-            const searResultListAnchorElement = this.createHTMLElement(
-                "a", ["ml-2"], {
-                    href: `/company.html?symbol=${symbol}`,
-                }
-            );
+            const searResultListAnchorElement = createHTMLElement("a", ["ml-2"], {
+                href: `/company.html?symbol=${symbol}`,
+            });
             searResultListAnchorElement.innerHTML = `${this.highLightText(
         name
       )} (${this.highLightText(symbol)})`;
 
-            const searResultListSpanElement = this.createHTMLElement(
+            const searResultListSpanElement = createHTMLElement(
                 "span", ["ml-2"], {},
                 `(${changes})`
             );
 
-            this.changeColorOfPriceChanges(changes, searResultListSpanElement);
+            changeColorOfPriceChange(changes, searResultListSpanElement);
 
-            const searResultCompareButtonoDiv = this.createHTMLElement("div");
+            const searResultCompareButtonoDiv = createHTMLElement("div");
 
-            const searchResultsCompareButton = this.createHTMLElement(
+            const searchResultsCompareButton = createHTMLElement(
                 "button", ["btn", "btn-primary", "compare-button", "ml-2"], {},
                 "Compare"
             );
@@ -107,24 +71,24 @@ class Results {
                 this.printCompanyForCompare(company);
             });
 
-            this.appendChildrenElementsToFather(
+            appendChildrenElementsToFather(
                 searResultCompanyInfoDiv,
                 searResultListImgElement,
                 searResultListAnchorElement,
                 searResultListSpanElement
             );
-            this.appendChildrenElementsToFather(
+            appendChildrenElementsToFather(
                 searResultCompareButtonoDiv,
                 searchResultsCompareButton
             );
 
-            this.appendChildrenElementsToFather(
+            appendChildrenElementsToFather(
                 searResultListLIElement,
                 searResultCompanyInfoDiv,
                 searResultCompareButtonoDiv
             );
 
-            this.appendChildrenElementsToFather(
+            appendChildrenElementsToFather(
                 searResultListULElement,
                 searResultListLIElement
             );

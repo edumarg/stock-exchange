@@ -2,16 +2,12 @@ class SearchBar {
     constructor(element) {
         this.element = element;
         this.htmlCreation = this.createSearchBar();
-        this.URL = "https://financialmodelingprep.com";
-        this.API_KEY = `apikey=ed93f3e229380c530b7a0e7663f86b99`;
     }
 
     fetchSearchData = async function() {
         let whatToSearch = searchInput.value;
         const TICKER_SEARCH_PATH = `api/v3/search?query=${whatToSearch}&limit=10&exchange=NASDAQ`;
-        const response = await fetch(
-            `${this.URL}/${TICKER_SEARCH_PATH}&${this.API_KEY}`
-        );
+        const response = await fetch(`${URL}/${TICKER_SEARCH_PATH}&${API_KEY}`);
         const companies = await response.json();
         return companies;
     };
@@ -19,12 +15,8 @@ class SearchBar {
     fetchCompanyInfo = async function(symbol) {
         const companySymbol = symbol;
         const COMPANY_PROFILE_PATH = `api/v3/profile/${companySymbol}`;
-        const response = await fetch(
-            `${this.URL}/${COMPANY_PROFILE_PATH}?${this.API_KEY}`
-        );
-
+        const response = await fetch(`${URL}/${COMPANY_PROFILE_PATH}?${API_KEY}`);
         const information = await response.json();
-
         return information;
     };
 
@@ -38,24 +30,6 @@ class SearchBar {
         return company;
     };
 
-    createHTMLElement = function(
-        element,
-        classes = [],
-        attributes = {},
-        text = ""
-    ) {
-        const createElement = document.createElement(element);
-        for (let i = 0; i < classes.length; i++) {
-            createElement.classList.add(classes[i]);
-        }
-
-        for (let key in attributes) {
-            createElement.setAttribute(key, attributes[key]);
-        }
-        createElement.textContent = text;
-        return createElement;
-    };
-
     searchResults = async function(callback) {
         searchButton.addEventListener("click", async(event) => {
             event.preventDefault();
@@ -65,7 +39,6 @@ class SearchBar {
             const mapedCompanies = await Promise.all(
                 companies.map(async(company) => {
                     company = await this.fetchCompanyInfo(company.symbol);
-
                     const { companyName, image, changes, symbol } = company[0];
                     return this.createListItem(image, symbol, companyName, changes);
                 })
@@ -75,22 +48,9 @@ class SearchBar {
         });
     };
 
-    setElementAttributes = function(element, attributes) {
-        for (let key in attributes) {
-            element.setAttribute(key, attributes[key]);
-        }
-    };
-
-    appendChildrenElementsToFather = function(father, ...children) {
-        for (let child of children) {
-            father.appendChild(child);
-        }
-    };
-
     createSearchBar = function() {
         const searchBar = this.element;
-
-        const searchBarNavItem = this.createHTMLElement("nav", [
+        const searchBarNavItem = createHTMLElement("nav", [
             "navbar",
             "navbar-expand-lg",
             "navbar-light",
@@ -101,7 +61,7 @@ class SearchBar {
         ]);
         searchBar.appendChild(searchBarNavItem);
 
-        const searchBarForm = this.createHTMLElement("form", [
+        const searchBarForm = createHTMLElement("form", [
             "input-group",
             "my-2",
             "my-lg-0",
@@ -111,7 +71,7 @@ class SearchBar {
             "flex-nowrap",
         ]);
 
-        const searchBarInput = this.createHTMLElement(
+        const searchBarInput = createHTMLElement(
             "input", ["form-control", "mr-sm-2"], {
                 id: "searchInput",
                 type: "search",
@@ -120,25 +80,25 @@ class SearchBar {
             }
         );
 
-        const searchButton = this.createHTMLElement(
+        const searchButton = createHTMLElement(
             "button", ["btn", "btn-outline-success", "my-sm-0", "m-0"], { id: "searchButton" },
             "Search"
         );
 
-        const searchBarDivforSpiner = this.createHTMLElement(
+        const searchBarDivforSpiner = createHTMLElement(
             "div", ["spinner-border", "invisible", "ml-3"], {
                 role: "status",
                 id: "searchSpinner",
             }
         );
 
-        const searchBarSpinner = this.createHTMLElement(
+        const searchBarSpinner = createHTMLElement(
             "span", ["sr-only"], {},
             "Loading..."
         );
         searchBarDivforSpiner.appendChild(searchBarSpinner);
 
-        this.appendChildrenElementsToFather(
+        appendChildrenElementsToFather(
             searchBarForm,
             searchBarInput,
             searchButton,

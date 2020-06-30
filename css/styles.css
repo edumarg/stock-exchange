@@ -16,7 +16,7 @@
 }
 
 .stocks-marquee {
-    animation: scrolling 30s linear infinite;
+    animation: scrolling 100s linear infinite;
 }
 
 @keyframes scrolling {
@@ -24,6 +24,6 @@
         transform: translateX(0);
     }
     100% {
-        transform: translateX(-300%);
+        transform: translateX(-700%);
     }
 }
