@@ -2,6 +2,7 @@ class CompareInfo {
     constructor(element, symbols) {
         this.element = element;
         this.symbols = symbols;
+        this.loadpage = this.load();
     }
 
     fetchCompanyInfo = async function(symbol) {
@@ -53,9 +54,11 @@ class CompareInfo {
         const companyInfoRow = createHTMLElement("div", ["row"], {
             id: "companyInfoRow",
         });
-        const companyInfoCol = createHTMLElement("div", ["col-xl-12"], {
-            id: "companyInfoCol",
-        });
+        const companyInfoCol = createHTMLElement(
+            "div", ["col-3", "border", "border-danger"], {
+                id: "companyInfoCol",
+            }
+        );
         companyInfoRow.appendChild(companyInfoCol);
 
         const companyTitlerow = createHTMLElement("div", ["row"], {

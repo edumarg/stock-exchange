@@ -97,14 +97,26 @@ class SearchBar {
                 event.preventDefault();
                 searchResultList.textContent = "";
                 searchSpinner.classList.remove("invisible");
-                const companies = await this.fetchSearchData();
-                const mapedCompanies = await Promise.all(
-                    companies.map(async(company) => {
-                        company = await this.fetchCompanyInfo(company.symbol);
-                        const { companyName, image, changes, symbol } = company[0];
-                        return this.createListItem(image, symbol, companyName, changes);
-                    })
+                //External Server
+                // const companies = await this.fetchSearchData();
+                // const mapedCompanies = await Promise.all(
+                //     companies.map(async(company) => {
+                //         company = await this.fetchCompanyInfo(company.symbol);
+                //         const { companyName, image, changes, symbol } = company[0];
+                //         return this.createListItem(image, symbol, companyName, changes);
+                //     })
+                // );
+                //External Server ends
+
+                /// internal server Node JS project
+                const whatToSearch = searchInput.value;
+                console.log(whatToSearch);
+                const responseFromSearch = await fetch(
+                    `http://localhost:3000/search?query=${whatToSearch}`
                 );
+                const mapedCompanies = await responseFromSearch.json();
+                console.log(mapedCompanies);
+                // internal server ends
                 callback(mapedCompanies);
                 searchSpinner.classList.add("invisible");
             }

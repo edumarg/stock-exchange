@@ -18,11 +18,10 @@
     (async function() {
         queryString = new URLSearchParams(window.location.search);
         queryStringSymbols = queryString.get("symbol");
-        const comapreInfo = new CompareInfo(
+        const compareInfo = new CompareInfo(
             document.getElementById("compareInfo"),
             queryStringSymbols
         );
-        comapreInfo.load();
     })();
 </script>
 

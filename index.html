@@ -57,9 +57,6 @@
         await form.searchResults((companies) => {
             results.renderResults(companies);
         });
-        await results.compareButtonsEventListener((symbol) => {
-            compareBar.addCompaniesToCompare(symbol);
-        });
     })();
 </script>
 

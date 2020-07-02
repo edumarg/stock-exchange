@@ -44,7 +44,6 @@ class Marquee {
         }
     };
 
-    //  ------------------  Create the MArquee with the data fetch and the element creation ------------------
     createMarquee = async function() {
         const company = await this.fetchMarqueeData();
         const marqueeList = this.element;

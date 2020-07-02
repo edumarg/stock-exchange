@@ -96,6 +96,18 @@ class Results {
         this.compareButtonsEventListener();
     };
 
+    compareButtonsEventListener = function(callback) {
+        const comparebuttons = document.querySelectorAll(".compare-button");
+        const companySymbols = document.querySelectorAll(".symbol");
+        comparebuttons.forEach((button, index) => {
+            button.addEventListener("click", (event) => {
+                this.addCompaniesToCompare(
+                    companySymbols[index].textContent.replace("(", "").replace(")", "")
+                );
+            });
+        });
+    };
+
     addCompaniesToCompare = function(company) {
         if (
             this.companiesForCompare.indexOf(company) === -1 &&
@@ -104,15 +116,14 @@ class Results {
             this.companiesForCompare.push(company);
 
             const companyToCompareButton = createHTMLElement(
-                "button", ["mr-3", "btn", "btn-primary"], {},
+                "button", ["company-to-compare", "mr-3", "btn", "btn-primary"], {},
                 `${company} x`
             );
             companiesToCompareBar.appendChild(companyToCompareButton);
             let symbolsForHref = this.companiesForCompare.join();
             let CompareCompaniesButtonHref = `/compare.html?symbol=${symbolsForHref}`;
             compareButtonAnchor.setAttribute("href", CompareCompaniesButtonHref);
-
-            companyToCompareButton.addEventListener("click", () => {
+            companyToCompareButton.addEventListener("click", (event) => {
                 let symbolToRemove = event.target.textContent;
                 symbolToRemove = symbolToRemove.replace(" x", "");
                 let indextoRemove = this.companiesForCompare.indexOf(symbolToRemove);
@@ -121,18 +132,6 @@ class Results {
                 CompareCompaniesButtonHref = `/compare.html?symbol=${symbolsForHref}`;
                 compareButtonAnchor.setAttribute("href", CompareCompaniesButtonHref);
                 event.target.remove();
-            });
-        }
-    };
-
-    compareButtonsEventListener = function() {
-        const comparebuttons = document.querySelectorAll(".compare-button");
-        const companySymbols = document.querySelectorAll(".symbol");
-        for (let i = 0; i < comparebuttons.length; i++) {
-            comparebuttons[i].addEventListener("click", (event) => {
-                this.addCompaniesToCompare(
-                    companySymbols[i].textContent.replace("(", "").replace(")", "")
-                );
             });
         }
     };
