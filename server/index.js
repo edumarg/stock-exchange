@@ -58,13 +58,14 @@ const searchSchema = new mongoose.Schema({
 const Search = mongoose.model("Search", searchSchema);
 
 async function sendSearchedSymbol(symbol) {
-    const search = new Search({ _symbol: symbol });
+    const search = new Search({ symbol: symbol });
     search = await search.save();
 }
 
 //handling GET requests
 app.get("/search", (req, res) => {
     const searchQuery = req.query.query;
+    sendSearchedSymbol(searchQuery);
     searchNasdaqWithProfile(searchQuery).then((mapedCompanies) => {
         res.send(mapedCompanies);
     });
