@@ -1,7 +1,4 @@
 const express = require("express");
-// const fetch = require("isomorphic-fetch");
-const cors = require("cors");
-// const mongoose = require("mongoose");
 const search = require("./routes/search");
 
 const app = express();
