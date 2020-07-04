@@ -13,7 +13,6 @@ renderResults = function(searches) {
         const searResultListLIElement = createHTMLElement("li", [
             "list-group-item",
             "d-flex",
-            "flex-row",
             "justify-content-between",
         ]);
 
@@ -34,7 +33,18 @@ renderResults = function(searches) {
             searResultDateSpanElement
         );
 
-        searResultListLIElement.appendChild(searResultListAnchorElement);
+        const searchResultDeleteButtonDiv = createHTMLElement("div", ["mr-3"]);
+        const searchResultDeleteButton = createHTMLElement(
+            "button", ["delete-button", "btn", "btn-primary", "ml-2"], {},
+            "Delete"
+        );
+
+        searchResultDeleteButtonDiv.appendChild(searchResultDeleteButton);
+        appendChildrenElementsToFather(
+            searResultListLIElement,
+            searResultListAnchorElement,
+            searchResultDeleteButtonDiv
+        );
         searResultListULElement.appendChild(searResultListLIElement);
     }
 };
