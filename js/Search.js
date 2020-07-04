@@ -106,11 +106,17 @@ class SearchBar {
             searchBarNavItem,
             historyButtonDiv
         );
+    };
 
-        // const queryString = new URLSearchParams(window.location.search);
-        // const queryStringSymbol = queryString.get("symbol");
-        // console.log("query", queryStringSymbol);
-        // searchInput.value = queryStringSymbol;
+    fetchInternalServer = async function(callback) {
+        searchSpinner.classList.remove("invisible");
+        const whatToSearch = searchInput.value;
+        const responseFromSearch = await fetch(
+            `http://localhost:3000/search?query=${whatToSearch}`
+        );
+        const mapedCompanies = await responseFromSearch.json();
+        callback(mapedCompanies);
+        searchSpinner.classList.add("invisible");
     };
 
     searchResults = async function(callback) {
@@ -119,14 +125,7 @@ class SearchBar {
         console.log("query", queryStringSymbol);
         if (queryStringSymbol) {
             searchInput.value = queryStringSymbol;
-            const whatToSearch = searchInput.value;
-            const responseFromSearch = await fetch(
-                `http://localhost:3000/search?query=${whatToSearch}`
-            );
-            const mapedCompanies = await responseFromSearch.json();
-            // internal server ends
-            callback(mapedCompanies);
-            searchSpinner.classList.add("invisible");
+            this.fetchInternalServer(callback);
         } else {
             searchButton.addEventListener("click", async(event) => {
                 if (searchInput.value) {
@@ -145,14 +144,8 @@ class SearchBar {
                     //External Server ends
 
                     /// internal server Node JS project
-                    const whatToSearch = searchInput.value;
-                    const responseFromSearch = await fetch(
-                        `http://localhost:3000/search?query=${whatToSearch}`
-                    );
-                    const mapedCompanies = await responseFromSearch.json();
+                    this.fetchInternalServer(callback);
                     // internal server ends
-                    callback(mapedCompanies);
-                    searchSpinner.classList.add("invisible");
                 }
             });
         }
