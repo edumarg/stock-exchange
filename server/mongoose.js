@@ -20,9 +20,16 @@ async function sendSearchedSymbol(symbol) {
 
 async function getSearchHistory() {
     let history = await Search.find().sort({ date: -1 }).limit(10);
-    console.log("inside", history);
+    return history;
+}
+
+async function delteId(id) {
+    let result = await Search.deleteOne({ _id: `${id}` });
+    console.log("result", result);
+    let history = await Search.find().sort({ date: -1 }).limit(10);
     return history;
 }
 
 module.exports.sendSearchedSymbol = sendSearchedSymbol;
 module.exports.getSearchHistory = getSearchHistory;
+module.exports.delteId = delteId;

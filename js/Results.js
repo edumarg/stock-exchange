@@ -96,7 +96,7 @@ class Results {
         this.compareButtonsEventListener();
     };
 
-    compareButtonsEventListener = function(callback) {
+    compareButtonsEventListener = function() {
         const comparebuttons = document.querySelectorAll(".compare-button");
         const companySymbols = document.querySelectorAll(".symbol");
         comparebuttons.forEach((button, index) => {

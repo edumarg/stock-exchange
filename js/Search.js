@@ -122,7 +122,6 @@ class SearchBar {
     searchResults = async function(callback) {
         const queryString = new URLSearchParams(window.location.search);
         const queryStringSymbol = queryString.get("symbol");
-        console.log("query", queryStringSymbol);
         if (queryStringSymbol) {
             searchInput.value = queryStringSymbol;
             this.fetchInternalServer(callback);

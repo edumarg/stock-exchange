@@ -5,10 +5,11 @@ async function getSearchHistory() {
 }
 
 renderResults = function(searches) {
+    searchResultList.textContent = "";
     const searResultListULElement = createHTMLElement("ul", ["list-group-flush"]);
     searchResultList.appendChild(searResultListULElement);
     for (let search of searches) {
-        const { symbol, date } = search;
+        const { symbol, date, _id } = search;
 
         const searResultListLIElement = createHTMLElement("li", [
             "list-group-item",
@@ -38,6 +39,14 @@ renderResults = function(searches) {
             "button", ["delete-button", "btn", "btn-primary", "ml-2"], {},
             "Delete"
         );
+
+        searchResultDeleteButton.addEventListener("click", async(event) => {
+            event.preventDefault();
+            const id = search._id;
+            const data = await fetch(`http://localhost:3000/search-history/${id}`);
+            const updateResults = await data.json();
+            return renderResults(updateResults);
+        });
 
         searchResultDeleteButtonDiv.appendChild(searchResultDeleteButton);
         appendChildrenElementsToFather(
