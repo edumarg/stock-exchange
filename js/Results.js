@@ -26,7 +26,7 @@ class Results {
             "list-group-flush",
         ]);
         searchResultList.appendChild(searResultListULElement);
-
+        console.log(companies);
         for (let company of companies) {
             const { name, image, symbol, changes } = company;
 

@@ -1,7 +1,7 @@
 const express = require("express");
 const fetch = require("isomorphic-fetch");
 const cors = require("cors");
-const sendSearchedSymbol = require("../mogoose.js");
+const search = require("../mongoose.js");
 
 const router = express.Router();
 router.use(cors());
@@ -48,7 +48,7 @@ async function searchNasdaqWithProfile(searchTerm) {
 //handling GET requests
 router.get("/", (req, res) => {
     const searchQuery = req.query.query;
-    sendSearchedSymbol(searchQuery);
+    search.sendSearchedSymbol(searchQuery);
     searchNasdaqWithProfile(searchQuery).then((mapedCompanies) => {
         res.send(mapedCompanies);
     });

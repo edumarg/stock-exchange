@@ -13,8 +13,16 @@ const searchSchema = new mongoose.Schema({
 const Search = mongoose.model("Search", searchSchema);
 
 async function sendSearchedSymbol(symbol) {
-    const search = new Search({ symbol: symbol });
+    let search = new Search({ symbol: symbol });
     search = await search.save();
+    return search;
 }
 
-module.exports = sendSearchedSymbol;
+async function getSearchHistory() {
+    let history = await Search.find().sort({ date: -1 }).limit(10);
+    console.log("inside", history);
+    return history;
+}
+
+module.exports.sendSearchedSymbol = sendSearchedSymbol;
+module.exports.getSearchHistory = getSearchHistory;

@@ -88,7 +88,24 @@ class SearchBar {
         );
 
         searchBarNavItem.appendChild(searchBarForm);
-        searchBar.appendChild(searchBarNavItem);
+
+        const historyButtonDiv = createHTMLElement("div", ["col-3"]);
+
+        const historyButtonAnchor = createHTMLElement(
+            "a", ["btn", "btn-primary"], {
+                id: "historyButtonAnchor",
+                href: `/search-history.html`,
+                role: "button",
+            },
+            `Search History`
+        );
+
+        historyButtonDiv.appendChild(historyButtonAnchor);
+        appendChildrenElementsToFather(
+            searchBar,
+            searchBarNavItem,
+            historyButtonDiv
+        );
     };
 
     searchResults = async function(callback) {
@@ -110,12 +127,10 @@ class SearchBar {
 
                 /// internal server Node JS project
                 const whatToSearch = searchInput.value;
-                console.log(whatToSearch);
                 const responseFromSearch = await fetch(
                     `http://localhost:3000/search?query=${whatToSearch}`
                 );
                 const mapedCompanies = await responseFromSearch.json();
-                console.log(mapedCompanies);
                 // internal server ends
                 callback(mapedCompanies);
                 searchSpinner.classList.add("invisible");
