@@ -106,35 +106,55 @@ class SearchBar {
             searchBarNavItem,
             historyButtonDiv
         );
+
+        // const queryString = new URLSearchParams(window.location.search);
+        // const queryStringSymbol = queryString.get("symbol");
+        // console.log("query", queryStringSymbol);
+        // searchInput.value = queryStringSymbol;
     };
 
     searchResults = async function(callback) {
-        searchButton.addEventListener("click", async(event) => {
-            if (searchInput.value) {
-                event.preventDefault();
-                searchResultList.textContent = "";
-                searchSpinner.classList.remove("invisible");
-                //External Server
-                // const companies = await this.fetchSearchData();
-                // const mapedCompanies = await Promise.all(
-                //     companies.map(async(company) => {
-                //         company = await this.fetchCompanyInfo(company.symbol);
-                //         const { companyName, image, changes, symbol } = company[0];
-                //         return this.createListItem(image, symbol, companyName, changes);
-                //     })
-                // );
-                //External Server ends
+        const queryString = new URLSearchParams(window.location.search);
+        const queryStringSymbol = queryString.get("symbol");
+        console.log("query", queryStringSymbol);
+        if (queryStringSymbol) {
+            searchInput.value = queryStringSymbol;
+            const whatToSearch = searchInput.value;
+            const responseFromSearch = await fetch(
+                `http://localhost:3000/search?query=${whatToSearch}`
+            );
+            const mapedCompanies = await responseFromSearch.json();
+            // internal server ends
+            callback(mapedCompanies);
+            searchSpinner.classList.add("invisible");
+        } else {
+            searchButton.addEventListener("click", async(event) => {
+                if (searchInput.value) {
+                    event.preventDefault();
+                    searchResultList.textContent = "";
+                    searchSpinner.classList.remove("invisible");
+                    //External Server
+                    // const companies = await this.fetchSearchData();
+                    // const mapedCompanies = await Promise.all(
+                    //     companies.map(async(company) => {
+                    //         company = await this.fetchCompanyInfo(company.symbol);
+                    //         const { companyName, image, changes, symbol } = company[0];
+                    //         return this.createListItem(image, symbol, companyName, changes);
+                    //     })
+                    // );
+                    //External Server ends
 
-                /// internal server Node JS project
-                const whatToSearch = searchInput.value;
-                const responseFromSearch = await fetch(
-                    `http://localhost:3000/search?query=${whatToSearch}`
-                );
-                const mapedCompanies = await responseFromSearch.json();
-                // internal server ends
-                callback(mapedCompanies);
-                searchSpinner.classList.add("invisible");
-            }
-        });
+                    /// internal server Node JS project
+                    const whatToSearch = searchInput.value;
+                    const responseFromSearch = await fetch(
+                        `http://localhost:3000/search?query=${whatToSearch}`
+                    );
+                    const mapedCompanies = await responseFromSearch.json();
+                    // internal server ends
+                    callback(mapedCompanies);
+                    searchSpinner.classList.add("invisible");
+                }
+            });
+        }
     };
 }

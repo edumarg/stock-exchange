@@ -18,7 +18,7 @@ renderResults = function(searches) {
         ]);
 
         const searResultListAnchorElement = createHTMLElement("a", [], {
-            href: `/#`,
+            href: `/index.html?symbol=${symbol}`,
         });
         const searResultSymbolSpanElement = createHTMLElement(
             "span", ["symbol", "mr-2"], {},

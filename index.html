@@ -53,6 +53,7 @@
         marquee.createMarquee();
         const compareBar = new CompareBar(document.getElementById("compareBar"));
         const form = new SearchBar(document.getElementById("searchBar"));
+
         const results = new Results(document.getElementById("searchResultList"));
         await form.searchResults((companies) => {
             results.renderResults(companies);
