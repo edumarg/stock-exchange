@@ -1,2 +1,2 @@
 const URL = "https://financialmodelingprep.com";
-const API_KEY = `apikey=ed93f3e229380c530b7a0e7663f86b99`;
+const API_KEY = `apikey=ea12a6445627535f77bf1b31041d6831`;
